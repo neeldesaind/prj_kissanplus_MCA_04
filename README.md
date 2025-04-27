@@ -3,7 +3,6 @@
 </h1>
 
 <p align="center">
-<img src="https://img.shields.io/badge/Status-Active-black?style=for-the-badge" />
 <img src="https://img.shields.io/badge/Backend-Node.js-black?style=for-the-badge&logo=node.js" />
 <img src="https://img.shields.io/badge/Database-MongoDB-black?style=for-the-badge&logo=mongodb" />
 <img src="https://img.shields.io/badge/Payment-Razorpay-black?style=for-the-badge&logo=razorpay" />
