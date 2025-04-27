@@ -1,5 +1,5 @@
 <h1 align="center">
-🌾 Kissan Plus DM
+🌾 Kissan Plus
 </h1>
 
 <p align="center">
