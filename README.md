@@ -75,7 +75,7 @@ App runs by default on `http://localhost:5173`.
 
 ## 🤝 Contribution
 
-[https://github.com/yash-b-patel](Yash Patel)
+(https://github.com/yash-b-patel)[Yash Patel]
 
 ---
 
