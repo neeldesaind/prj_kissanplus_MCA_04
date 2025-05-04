@@ -1,5 +1,3 @@
-Here's the updated version with the title in bold:
-
 # **Kissan-Plus** 🌾
 
 **Kissan-Plus** is a full-stack application designed to support and empower farmers with tools and resources. It features a Vite-powered React frontend and a Node.js/Express backend.
@@ -56,6 +54,12 @@ cp .env.sample .env
 # Fill in .env with proper values
 npm run dev
 ```
+
+### Documentation
+[23MCA028,151.pdf](https://github.com/user-attachments/files/20027279/23MCA028.151.pdf)
+
+### Presentation
+[Kissan Plus PPT](https://www.canva.com/design/DAGhFuUuJxQ/aIJ4cGLIk2WjS0AUjTk52w/view?utm_content=DAGhFuUuJxQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h953c639040)
 
 ### 🤝 Contributors
 
