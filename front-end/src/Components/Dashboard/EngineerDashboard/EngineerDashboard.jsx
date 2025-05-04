@@ -37,12 +37,12 @@ const EngineerDashboard = () => {
   const { form12 = {}, namuna = {}, noc = {}, exemption = {} } = applications;
 
   return (
-    <div className="p-6 ml-50">
-      <div className="bg-white p-6 rounded-lg shadow-sm max-w-5xl mx-auto">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Engineer Dashboard</h2>
+    <div className="p-6 ml-50 dark:bg-[#1b1c1c] dark:text-gray-100">
+      <div className="bg-white p-6 rounded-lg shadow-sm max-w-5xl mx-auto dark:bg-black dark:text-gray-100">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 dark:bg-black dark:text-gray-100">Engineer Dashboard</h2>
 
         {/* Payments Section */}
-        <h3 className="text-xl font-semibold text-gray-700 mb-2">Payments</h3>
+        <h3 className="text-xl font-semibold text-gray-700 mb-2 dark:bg-black dark:text-gray-100">Payments</h3>
         <div className="bg-blue-100 p-4 rounded-lg shadow-sm mb-8">
           <FaWater className="text-3xl text-blue-600 mb-2" />
           <h4 className="text-lg font-semibold text-blue-800">Total Income</h4>
@@ -52,7 +52,7 @@ const EngineerDashboard = () => {
         </div>
 
         {/* Applications Section */}
-        <h3 className="text-xl font-semibold text-gray-700 mb-2">Applications</h3>
+        <h3 className="text-xl font-semibold text-gray-700 mb-2 dark:bg-black dark:text-gray-100">Applications</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
           <ApplicationCard 
             title="Form 12 Applications" 
@@ -76,7 +76,7 @@ const EngineerDashboard = () => {
             pending={noc.pending} 
             approved={noc.approved} 
             denied={noc.denied} 
-            bg="pink" 
+            bg="orange" 
           />
           <ApplicationCard 
             title="Exemption Applications" 
@@ -89,7 +89,7 @@ const EngineerDashboard = () => {
         </div>
 
         {/* Users Section */}
-        <h3 className="text-xl font-semibold text-gray-700 mb-2">Users</h3>
+        <h3 className="text-xl font-semibold text-gray-700 mb-2 dark:bg-black dark:text-gray-100">Users</h3>
         <div className="bg-yellow-100 p-4 rounded-lg shadow-sm">
           <FaDatabase className="text-3xl text-yellow-600 mb-2" />
           <h4 className="text-lg font-semibold text-yellow-800">Total Users</h4>

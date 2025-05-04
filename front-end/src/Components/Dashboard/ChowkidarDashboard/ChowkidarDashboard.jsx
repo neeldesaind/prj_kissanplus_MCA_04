@@ -38,13 +38,13 @@ const ChowkidarDashboard = () => {
   }
 
   return (
-    <div className="p-6 ml-30">
-      <div className="bg-white p-4 rounded-lg shadow-sm max-w-3xl mx-auto">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Chowkidar Dashboard</h2>
+    <div className="p-6 ml-30 dark:bg-[#1b1c1c] dark:text-gray-100">
+      <div className="bg-white p-4 rounded-lg shadow-sm max-w-3xl mx-auto dark:bg-black dark:text-gray-100">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4 dark:bg-black dark:text-gray-100">Chowkidar Dashboard</h2>
 
         {/* Total Water Requests */}
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Water Requests Overview</h3>
+        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6 dark:bg-black dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:bg-black dark:text-gray-100">Water Requests Overview</h3>
           <div className="bg-blue-100 p-4 rounded-lg shadow-sm hover:bg-blue-200 transition duration-300">
             <FaWater className="text-3xl text-blue-600 mb-2" />
             <h3 className="text-lg font-semibold text-blue-800">Total Water Requests</h3>
@@ -55,8 +55,8 @@ const ChowkidarDashboard = () => {
         </div>
 
         {/* Source-wise Requests */}
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Source-wise Water Requests</h3>
+        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6 dark:bg-black dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:bg-black dark:text-gray-100">Source-wise Water Requests</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {Object.keys(groupedRequests).map((sourceType) => (
               <div

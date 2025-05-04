@@ -7,6 +7,7 @@ import { useNavigate } from "react-router"; // Import useNavigate instead of use
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { useDarkMode } from "../../../Context/useDarkMode";
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -16,6 +17,50 @@ const UsersList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate(); // Use useNavigate here
+  const { theme } = useDarkMode();
+
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+
+
+  const customStyles = {
+    table: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      },
+    },
+    headRow: {
+      style: {
+        backgroundColor: isDarkMode ? "#2c2c2c" : "#E3F0AF",
+        color: isDarkMode ? "#fff" : "black",
+        fontWeight: "bold",
+      },
+    },
+    headCells: {
+      style: {
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    rows: {
+      style: {
+        "&:nth-child(even)": {
+          backgroundColor: isDarkMode ? "black" : "#fafcf0",
+        },
+        "&:hover": {
+          backgroundColor: isDarkMode ? "#2f3030" : "#f5f5f5",
+        },
+        backgroundColor: isDarkMode ? "black" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    pagination: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+  };
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -141,23 +186,33 @@ const UsersList = () => {
 
   if (error) return <p className="text-center text-red-500 text-xl">{error}</p>;
 
+  const NoDataComponent = () => (
+    <div
+      className={`w-full py-2 text-center text-xl font-semibold ${
+        isDarkMode ? "text-gray-300 bg-[#1b1c1c]" : "text-gray-600 bg-white"
+      }`}
+    >
+      There are no records to display
+    </div>  
+  );
+
   return (
-    <div className="container mx-auto p-4 max-w-5xl ml-75">
+    <div className="container mx-auto p-4 max-w-5xl ml-75 dark:bg-[#1b1c1c] dark:text-gray-100">
       {/* Table Header with Search and Role Filter */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 bg-gray-50 p-4 rounded-md shadow-md border border-gray-300">
-        <h2 className="text-2xl font-semibold text-black">User List</h2>
-        <div className="flex space-x-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 bg-gray-50 p-4 rounded-md shadow-md border border-gray-300 dark:bg-black dark:text-gray-100">
+        <h2 className="text-2xl font-semibold text-black dark:bg-black dark:text-gray-100">User List</h2>
+        <div className="flex space-x-4 dark:bg-black dark:text-gray-100">
           <input
             type="text"
             placeholder="Search by full name..."
             value={searchQuery}
             onChange={handleSearchChange}
-            className="border border-gray-300 px-3 py-2 rounded-md text-sm bg-white shadow-md w-64"
+            className="border border-gray-300 px-3 py-2 rounded-md text-sm bg-white shadow-md w-64 dark:bg-black dark:text-gray-100"
           />
           <select
             value={selectedRole}
             onChange={handleRoleChange}
-            className="border border-gray-300 px-3 py-2 rounded-md text-sm bg-white shadow-md"
+            className="border border-gray-300 px-3 py-2 rounded-md text-sm bg-white shadow-md dark:bg-black dark:text-gray-100"
           >
             <option value="All">All Roles</option>
             <option value="Farmer">Farmer</option>
@@ -181,30 +236,12 @@ const UsersList = () => {
         columns={columns}
         data={filteredUsers}
         pagination
-        highlightOnHover
-        striped
         responsive
         progressPending={loading}
+        customStyles={customStyles}
+        noDataComponent={<NoDataComponent />} 
         className="shadow-lg border border-gray-300 rounded-lg"
-        customStyles={{
-          headRow: {
-            style: {
-              backgroundColor: "#E3F0AF",
-              color: "black",
-              fontWeight: "bold",
-            },
-          },
-          rows: {
-            style: {
-              "&:nth-child(even)": {
-                backgroundColor: "#fafcf0",
-              },
-              "&:hover": {
-                backgroundColor: "#fafcf0",
-              },
-            },
-          },
-        }}
+        
       />
     </div>
   );

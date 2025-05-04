@@ -1,32 +1,65 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import AOS from "aos";
 import "aos/dist/aos.css"; // Import AOS CSS
 
 function Contactus() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
   useEffect(() => {
-    // Initialize AOS animations
-    AOS.init({
-      duration: 1000, // Duration for animation
-      once: true, // Animation triggers only once
-    });
+    AOS.init({ duration: 1000, once: true });
 
-    // Refresh AOS on scroll to ensure animations are updated
-    window.addEventListener("scroll", () => {
+    const handleScroll = () => {
       AOS.refresh();
-    });
+    };
 
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", () => {
-        AOS.refresh();
-      });
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleChange = (e) => {
+    setFormData({ 
+      ...formData, 
+      [e.target.name]: e.target.value 
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setSuccessMessage("");
+    setErrorMessage("");
+
+    try {
+      const response = await axios.post(`${BASE_URL}/api/contact`, formData);
+      setSuccessMessage(response.data.message);
+      setFormData({ name: "", email: "", message: "" }); // Clear form after success
+    } catch (error) {
+      console.error(error);
+      setErrorMessage(
+        error.response?.data?.message || "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
       <section className="bg-white">
         <div className="grid grid-cols-1 lg:grid-cols-2">
-          {/* Left Section with Image */}
+          {/* Left Section: Your Image and Text */}
           <div
             className="relative flex items-end px-4 pb-16 pt-60 sm:pb-24 md:justify-center lg:pb-32 bg-gray-50 sm:px-6 lg:px-8"
             data-aos="fade-up"
@@ -142,7 +175,7 @@ function Contactus() {
             </div>
           </div>
 
-          {/* Right Section with Contact Form */}
+          {/* Right Section: Contact Form */}
           <div
             className="flex items-center justify-center px-4 py-10 bg-white sm:px-6 lg:px-8 sm:py-16 lg:py-24"
             data-aos="fade-up"
@@ -158,63 +191,56 @@ function Contactus() {
                 Get in touch with us for support or any queries.
               </p>
 
-              <form action="#" method="POST" className="mt-8">
+              {/* Show success or error message */}
+              {successMessage && (
+                <p className="mt-4 text-green-600 font-semibold">{successMessage}</p>
+              )}
+              {errorMessage && (
+                <p className="mt-4 text-red-600 font-semibold">{errorMessage}</p>
+              )}
+
+              <form onSubmit={handleSubmit} className="mt-8">
                 <div className="space-y-5">
                   <div>
-                    <label
-                      htmlFor=""
-                      className="text-base font-medium text-gray-900"
-                    >
-                      {" "}
-                      Name{" "}
-                    </label>
-                    <div
-                      className="mt-2.5 relative text-gray-400 focus-within:text-gray-600"
-                      data-aos="fade-up"
-                    >
+                    <label className="text-base font-medium text-gray-900">Name</label>
+                    <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600" data-aos="fade-up">
                       <input
                         type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
                         placeholder="Enter your full name"
+                        required
                         className="block w-full py-4 pl-4 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-green-600 focus:bg-white caret-green-600"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label
-                      htmlFor=""
-                      className="text-base font-medium text-gray-900"
-                    >
-                      {" "}
-                      Email address{" "}
-                    </label>
-                    <div
-                      className="mt-2.5 relative text-gray-400 focus-within:text-gray-600"
-                      data-aos="fade-up"
-                    >
+                    <label className="text-base font-medium text-gray-900">Email address</label>
+                    <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600" data-aos="fade-up">
                       <input
                         type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
                         placeholder="Enter your email address"
+                        required
                         className="block w-full py-4 pl-4 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-green-600 focus:bg-white caret-green-600"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label
-                      htmlFor=""
-                      className="text-base font-medium text-gray-900"
-                    >
-                      {" "}
-                      Message{" "}
-                    </label>
-                    <div
-                      className="mt-2.5 relative text-gray-400 focus-within:text-gray-600"
-                      data-aos="fade-up"
-                    >
+                    <label className="text-base font-medium text-gray-900">Message</label>
+                    <div className="mt-2.5 relative text-gray-400 focus-within:text-gray-600" data-aos="fade-up">
                       <textarea
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
                         rows="4"
                         placeholder="Enter your message"
+                        required
                         className="block w-full py-4 pl-4 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-green-600 focus:bg-white caret-green-600"
                       />
                     </div>
@@ -223,14 +249,16 @@ function Contactus() {
                   <div>
                     <button
                       type="submit"
+                      disabled={loading}
                       className="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 border border-transparent rounded-md bg-gradient-to-r from-green-900 to-green-600 focus:outline-none hover:opacity-80 focus:opacity-80 hover:scale-105 hover:bg-gradient-to-r hover:from-green-700 hover:to-green-500 cursor-pointer"
                       data-aos="fade-up"
                     >
-                      Send Message
+                      {loading ? "Sending..." : "Send Message"}
                     </button>
                   </div>
                 </div>
               </form>
+
             </div>
           </div>
         </div>

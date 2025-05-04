@@ -14,15 +14,14 @@ const exemptionSchema = new mongoose.Schema({
         type: Boolean,
         required: true
     },
-
     othersSurveyNumber: {
         type: String,
         default: null,
       },
-      date_of_well: {
-        type: String,
-        required: true,
-      },
+    date_of_well: {
+        type: Date,
+        required: true
+    },
     isOwner: {
         type: Boolean,
         required: true

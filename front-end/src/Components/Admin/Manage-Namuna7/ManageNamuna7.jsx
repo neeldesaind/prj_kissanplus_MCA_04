@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import DataTable from "react-data-table-component";
+import { useDarkMode } from "../../Context/useDarkMode";
 
 export default function ManageNamuna7() {
   const [startDate, setStartDate] = useState("");
@@ -11,6 +12,41 @@ export default function ManageNamuna7() {
 
   // Get today's date in yyyy-mm-dd format
   const today = new Date().toISOString().split("T")[0];
+  const { theme } = useDarkMode();
+
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  const customStyles = {
+    table: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      },
+    },
+    headRow: {
+      style: {
+        backgroundColor: isDarkMode ? "#2c2c2c" : "#f0f0f0",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    headCells: {
+      style: {
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    rows: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    pagination: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+  };
+
 
   // Fetch the applications
   useEffect(() => {
@@ -118,19 +154,29 @@ export default function ManageNamuna7() {
     },
   ];
 
-  return (
-    <div className="max-w-3xl mx-auto bg-white p-10 rounded-lg shadow-lg mb-10 text-sm">
+  const NoDataComponent = () => (
+    <div
+      className={`w-full py-2 text-center text-xl font-semibold ${
+        isDarkMode ? "text-gray-300 bg-[#1b1c1c]" : "text-gray-600 bg-white"
+      }`}
+    >
+      There are no records to display
+    </div>
+  );
 
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+  return (
+    <div className="max-w-3xl mx-auto bg-white p-10 rounded-lg shadow-lg mb-10 text-sm dark:bg-black dark:text-gray-100">
+
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:bg-black dark:text-gray-100">
         Manage Namuna 7 Applications
       </h2>
 
       {/* Start Date Picker */}
-      <div className="mb-4">
-        <label className="block font-medium mb-2">Start Date</label>
+      <div className="mb-4 dark:bg-black dark:text-gray-100">
+        <label className="block font-medium mb-2 dark:bg-black dark:text-gray-100">Start Date</label>
         <input
           type="date"
-          className="w-full p-3 border rounded"
+          className="w-full p-3 border rounded dark:bg-black dark:text-gray-100"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
           min={today}
@@ -139,11 +185,11 @@ export default function ManageNamuna7() {
       </div>
 
       {/* End Date Picker */}
-      <div className="mb-6">
-        <label className="block font-medium mb-2">End Date</label>
+      <div className="mb-6 dark:bg-black dark:text-gray-100">
+        <label className="block font-medium mb-2 dark:bg-black dark:text-gray-100">End Date</label>
         <input
           type="date"
-          className="w-full p-3 border rounded"
+          className="w-full p-3 border rounded dark:bg-black dark:text-gray-100"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
           min={startDate || today}
@@ -151,22 +197,32 @@ export default function ManageNamuna7() {
         />
       </div>
 
+      <>
+  {/* your label and input here */}
+
+      <style>{`
+        .dark input[type="date"]::-webkit-calendar-picker-indicator {
+          filter: invert(1) brightness(2);
+        }
+      `}</style>
+    </>
+
       {/* Submit Button */}
       <button
         onClick={handleSubmit}
-        className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 text-sm"
+        className="w-full bg-green-500 text-white p-3 rounded hover:bg-green-600 text-sm"
       >
         Submit
       </button>
 
       {/* DataTable for displaying applications */}
-      <div className="mt-6">
+      <div className="mt-6 dark:bg-black dark:text-gray-100">
         <DataTable
-          title="Manage Applications"
           columns={columns}
           data={applications}
           pagination
-          highlightOnHover
+          customStyles={customStyles}
+          noDataComponent={<NoDataComponent />}
         />
       </div>
     </div>

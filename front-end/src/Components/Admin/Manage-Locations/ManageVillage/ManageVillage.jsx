@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import DataTable from "react-data-table-component"; // Importing DataTable
+import { useDarkMode } from "../../../Context/useDarkMode"; // Importing useDarkMode for theme management
 
 export default function AddVillage() {
   const [villageName, setVillageName] = useState("");
@@ -16,6 +17,40 @@ export default function AddVillage() {
   const [selectedSubDistrict, setSelectedSubDistrict] = useState("");
   const [villagesFetched, setVillagesFetched] = useState(false);
   const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const { theme } = useDarkMode();
+  
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  const customStyles = {
+    table: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      },
+    },
+    headRow: {
+      style: {
+        backgroundColor: isDarkMode ? "#2c2c2c" : "#f0f0f0",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    headCells: {
+      style: {
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    rows: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    pagination: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+  };
 
 
   // Loading state
@@ -235,13 +270,23 @@ export default function AddVillage() {
     village.village_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const NoDataComponent = () => (
+    <div
+      className={`w-full py-2 text-center text-xl font-semibold ${
+        isDarkMode ? "text-gray-300 bg-[#1b1c1c]" : "text-gray-600 bg-white"
+      }`}
+    >
+      There are no records to display
+    </div>
+  );
+
   return (
-    <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-10">
-      <h2 className="text-xl font-bold mb-6 text-center">Manage Village</h2>
-      <form onSubmit={handleAddVillage} className="space-y-4">
-        <label className="block font-medium text-sm">Select State</label>
+    <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-10 dark:bg-black dark:text-gray-100">
+      <h2 className="text-xl font-bold mb-6 text-center dark:bg-black dark:text-gray-100">Manage Village</h2>
+      <form onSubmit={handleAddVillage} className="space-y-4 dark:bg-black dark:text-gray-100">
+        <label className="block font-medium text-sm dark:bg-black dark:text-gray-100">Select State</label>
         <select
-          className="w-full p-3 border rounded text-sm"
+          className="w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           value={selectedState}
           onChange={(e) => setSelectedState(e.target.value)}
           required
@@ -254,9 +299,9 @@ export default function AddVillage() {
           ))}
         </select>
 
-        <label className="block font-medium text-sm">Select District</label>
+        <label className="block font-medium text-sm dark:bg-black dark:text-gray-100">Select District</label>
         <select
-          className="w-full p-3 border rounded text-sm"
+          className="w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           value={selectedDistrict}
           onChange={(e) => setSelectedDistrict(e.target.value)}
           required
@@ -270,9 +315,9 @@ export default function AddVillage() {
           ))}
         </select>
 
-        <label className="block font-medium text-sm">Select Sub-District</label>
+        <label className="block font-medium text-sm dark:bg-black dark:text-gray-100">Select Sub-District</label>
         <select
-          className="w-full p-3 border rounded text-sm"
+          className="w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           value={selectedSubDistrict}
           onChange={(e) => setSelectedSubDistrict(e.target.value)}
           required
@@ -286,9 +331,9 @@ export default function AddVillage() {
           ))}
         </select>
 
-        <label className="block font-medium text-sm">Village Name</label>
+        <label className="block font-medium text-sm dark:bg-black dark:text-gray-100">Village Name</label>
         <input
-          className="w-full p-3 border rounded text-sm"
+          className="w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           type="text"
           value={villageName}
           onChange={(e) => setVillageName(e.target.value)}
@@ -328,7 +373,8 @@ export default function AddVillage() {
                 columns={columns}
                 data={filteredVillages}
                 pagination
-                highlightOnHover
+                customStyles={customStyles}
+                noDataComponent={<NoDataComponent />}
                 pointerOnHover
               />
             </div>

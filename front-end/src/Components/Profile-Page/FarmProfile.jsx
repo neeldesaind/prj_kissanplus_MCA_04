@@ -282,8 +282,8 @@ const FarmDetails = () => {
   
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-gray-50 shadow-lg rounded-lg">
-      <h2 className="text-xl font-semibold text-gray-700 mb-4 text-center">
+    <div className="max-w-5xl mx-auto p-6 bg-gray-50 shadow-lg rounded-lg dark:bg-black dark:text-white">
+      <h2 className="text-xl font-semibold text-gray-700 mb-4 text-center dark:bg-black dark:text-white">
         Farm Details
       </h2>
 
@@ -306,8 +306,8 @@ const FarmDetails = () => {
       </div>
 
       <div className="overflow-x-auto border border-gray-300 rounded-md shadow-md">
-        <table className="w-full bg-white text-sm">
-          <thead className="bg-gray-200 text-gray-700">
+        <table className="w-full bg-white text-sm dark:bg-black dark:text-white">
+          <thead className="bg-gray-200 text-gray-700 dark:bg-[#1b1c1c] dark:text-white">
             <tr>
               <th className="p-2 border">State</th>
               <th className="p-2 border">District</th>
@@ -327,7 +327,7 @@ const FarmDetails = () => {
                     <select
                       value={farm.state_id}
                       onChange={(e) => handleStateChange(index, e.target.value)}
-                      className="w-full p-1 border"
+                      className="w-full p-1 border dark:bg-[#2f3030] dark:text-white"
                     >
                       <option value="">Select State</option>
                       {states.map((state) => (
@@ -344,7 +344,7 @@ const FarmDetails = () => {
                       onChange={(e) =>
                         handleDistrictChange(index, e.target.value)
                       }
-                      className="w-full p-1 border bg-white text-black"
+                      className="w-full p-1 border bg-white text-black dark:bg-[#2f3030] dark:text-white"
                     >
                       <option value="">Select District</option>
                       {Array.isArray(farm.districts) &&
@@ -362,7 +362,7 @@ const FarmDetails = () => {
                       onChange={(e) =>
                         handleSubDistrictChange(index, e.target.value)
                       }
-                      className="w-full p-1 border"
+                      className="w-full p-1 border dark:bg-[#2f3030] dark:text-white"
                     >
                       <option value="">Select Sub-District</option>
                       {Array.isArray(farm.subDistricts) &&
@@ -379,7 +379,7 @@ const FarmDetails = () => {
                       value={farm.village_id}
                       onChange={(e) => handleFarmChange(index, e)}
                       name="village_id"
-                      className="w-full p-1 border"
+                      className="w-full p-1 border dark:bg-[#2f3030] dark:text-white"
                     >
                       <option value="">Select Village</option>
                       {Array.isArray(farm.villages) &&
@@ -401,7 +401,7 @@ const FarmDetails = () => {
                       name="surveyNumber"
                       value={farm.surveyNumber}
                       onChange={(e) => handleFarmChange(index, e)}
-                      className="w-full p-1 border"
+                      className="w-full p-1 border dark:bg-[#2f3030] dark:text-white"
                     />
                   </td>
 
@@ -411,7 +411,7 @@ const FarmDetails = () => {
                       name="poatNumber"
                       value={farm.poatNumber}
                       onChange={(e) => handleFarmChange(index, e)}
-                      className="w-full p-1 border"
+                      className="w-full p-1 border dark:bg-[#2f3030] dark:text-white"
                     />
                   </td>
 
@@ -421,7 +421,7 @@ const FarmDetails = () => {
                       name="farmArea"
                       value={farm.farmArea}
                       onChange={(e) => handleFarmChange(index, e)}
-                      className="w-full p-1 border"
+                      className="w-full p-1 border dark:bg-[#2f3030] dark:text-white"
                     />
                   </td>
 

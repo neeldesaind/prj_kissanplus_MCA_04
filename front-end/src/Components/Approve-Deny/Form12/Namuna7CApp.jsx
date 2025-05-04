@@ -6,6 +6,7 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import loadingAnime from "../../../assets/lottie/loadingAnime.json";
 import Lottie from "lottie-react";
+import { useDarkMode } from "../../Context/useDarkMode";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -15,6 +16,42 @@ const Namuna7CApp = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [dateOfSupply, setDateOfSupply] = useState({});
+  const { theme } = useDarkMode();
+
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+
+  const customStyles = {
+    table: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      },
+    },
+    headRow: {
+      style: {
+        backgroundColor: isDarkMode ? "#2c2c2c" : "#f0f0f0",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    headCells: {
+      style: {
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    rows: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    pagination: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+  };
+
 
   // Fetch data from the backend when the component mounts
   useEffect(() => {
@@ -147,28 +184,37 @@ const Namuna7CApp = () => {
       cell: (row) => {
         const isDisabled = !!row.date_of_supply; // Disable if already saved
         return (
-          <input
-            type="date"
-            value={
-              dateOfSupply[row._id] ||
-              (row.date_of_supply
-                ? new Date(row.date_of_supply).toISOString().split("T")[0]
-                : "")
-            }
-            onChange={(e) =>
-              setDateOfSupply({
-                ...dateOfSupply,
-                [row._id]: e.target.value,
-              })
-            }
-            disabled={isDisabled}
-            className={`border border-gray-300 rounded px-2 py-1 ${
-              isDisabled ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""
-            }`}
-          />
+          <>
+            <style>{`
+              .dark input[type="date"]::-webkit-calendar-picker-indicator {
+                filter: invert(1) brightness(2);
+              }
+            `}</style>
+            <input
+              type="date"
+              value={
+                dateOfSupply[row._id] ||
+                (row.date_of_supply
+                  ? new Date(row.date_of_supply).toISOString().split("T")[0]
+                  : "")
+              }
+              onChange={(e) =>
+                setDateOfSupply({
+                  ...dateOfSupply,
+                  [row._id]: e.target.value,
+                })
+              }
+              disabled={isDisabled}
+              className={`border border-gray-300 rounded px-2 py-1 dark:bg-[#1b1c1c] dark:text-gray-100 ${
+                isDisabled ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""
+              }`}
+            />
+          </>
         );
       },
     },
+
+    
     {
       name: "Actions",
       cell: (row) => {
@@ -197,18 +243,28 @@ const Namuna7CApp = () => {
       </div>
     );
 
+    const NoDataComponent = () => (
+      <div
+        className={`w-full py-2 text-center text-xl font-semibold ${
+          isDarkMode ? "text-gray-300 bg-[#1b1c1c]" : "text-gray-600 bg-white"
+        }`}
+      >
+        There are no records to display
+      </div>
+    );
+
   return (
-    <div className="max-w-6xl mx-auto mt-6 mb-10 ml-70">
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Water Supply Requests</h1>
+    <div className="max-w-6xl mx-auto mt-6 mb-10 ml-70 dark:bg-[#1b1c1c] dark:text-gray-100">
+      <div className="bg-white shadow-md rounded-lg p-6 text-black dark:bg-black dark:text-gray-100">
+        <div className="flex justify-between items-center mb-4 text-black dark:bg-black dark:text-gray-100">
+          <h1 className="text-2xl font-bold text-black dark:bg-black dark:text-gray-100">Water Supply Requests</h1>
           <button
             onClick={handleExportToExcel}
             disabled={filteredApplications.length === 0}
             className={`px-4 py-2 rounded ${
               filteredApplications.length === 0
                 ? "bg-gray-400 text-white cursor-not-allowed"
-                : "bg-green-500 hover:bg-green-600 text-white"
+                : "bg-green-500 hover:bg-green-600 text-white "
             }`}
           >
             Export to Excel
@@ -230,8 +286,9 @@ const Namuna7CApp = () => {
           data={filteredApplications}
           progressPending={loading}
           pagination
-          highlightOnHover
           responsive
+          customStyles={customStyles}
+          noDataComponent={<NoDataComponent />}
         />
       </div>
     </div>

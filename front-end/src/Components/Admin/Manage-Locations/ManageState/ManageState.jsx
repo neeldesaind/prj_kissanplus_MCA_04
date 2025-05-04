@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import DataTable from "react-data-table-component";
+import { useDarkMode } from "../../../Context/useDarkMode";
 
 export default function ManageStates() {
   const [stateName, setStateName] = useState("");
@@ -10,6 +11,42 @@ export default function ManageStates() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const { theme } = useDarkMode();
+  
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+
+  const customStyles = {
+    table: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      },
+    },
+    headRow: {
+      style: {
+        backgroundColor: isDarkMode ? "#2c2c2c" : "#f0f0f0",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    headCells: {
+      style: {
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    rows: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    pagination: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+  };
+
 
   // Fetch states with pagination
   const fetchStates = useCallback(async () => {
@@ -102,17 +139,26 @@ export default function ManageStates() {
     state.state_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  return (
-    <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-10 text-sm">
-      <Toaster position="top-center" reverseOrder={false} />
+  const NoDataComponent = () => (
+    <div
+      className={`w-full py-2 text-center text-xl font-semibold ${
+        isDarkMode ? "text-gray-300 bg-[#1b1c1c]" : "text-gray-600 bg-white"
+      }`}
+    >
+      There are no records to display
+    </div>  
+  );
 
-      <h2 className="text-xl font-bold mb-6 text-center">Manage States</h2>
+  return (
+    <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-10 text-sm dark:bg-black dark:text-gray-100">
+
+      <h2 className="text-xl font-bold mb-6 text-center dark:bg-black dark:text-gray-100">Manage States</h2>
 
       {/* Add State Form */}
       <form onSubmit={handleAddState} className="space-y-4 mb-6">
-        <label className="block font-medium">State Name</label>
+        <label className="block font-medium dark:bg-black dark:text-gray-100">State Name</label>
         <input
-          className="w-full p-3 border rounded"
+          className="w-full p-3 border rounded dark:bg-black dark:text-gray-100"
           type="text"
           value={stateName}
           onChange={(e) => setStateName(e.target.value)}
@@ -127,14 +173,14 @@ export default function ManageStates() {
       {/* Search Input */}
       <input
         type="text"
-        className="w-full p-3 border rounded mb-4 text-sm"
+        className="w-full p-3 border rounded mb-4 text-sm dark:bg-black dark:text-gray-100"
         placeholder="Search states..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 
       {/* State List Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto dark:bg-black dark:text-gray-100">
         <DataTable
           columns={[
             { name: "ID", selector: (row) => row.state_id, sortable: true },
@@ -144,7 +190,7 @@ export default function ManageStates() {
                 editingState && editingState.state_id === row.state_id ? (
                   <input
                     type="text"
-                    className="w-full p-2 border rounded text-sm"
+                    className="w-full p-2 border rounded text-sm dark:bg-black dark:text-gray-100"
                     value={editingState.state_name}
                     onChange={(e) =>
                       setEditingState({ ...editingState, state_name: e.target.value })
@@ -168,7 +214,7 @@ export default function ManageStates() {
                 ) : (
                   <button
                     onClick={() => setEditingState(row)}
-                    className="bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-600 text-sm"
+                    className="bg-[#ff8f00] text-white px-3 py-2 rounded hover:bg-[#ffb300] text-sm"
                   >
                     Edit
                   </button>
@@ -177,6 +223,8 @@ export default function ManageStates() {
           ]}
           data={filteredStates}
           pagination
+          noDataComponent={<NoDataComponent />} 
+          customStyles={customStyles}
         />
       </div>
 
@@ -185,7 +233,7 @@ export default function ManageStates() {
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
-          className="px-4 py-2 bg-gray-300 rounded mx-1 disabled:opacity-50 text-sm"
+          className="px-4 py-2 bg-gray-300 rounded mx-1 disabled:opacity-50 text-sm dark:bg-gray-500 dark:text-white"
         >
           Prev
         </button>
@@ -193,7 +241,7 @@ export default function ManageStates() {
         <button
           onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={page === totalPages}
-          className="px-4 py-2 bg-gray-300 rounded mx-1 disabled:opacity-50 text-sm"
+          className="px-4 py-2 bg-gray-300 rounded mx-1 disabled:opacity-50 text-sm dark:bg-gray-500 dark:text-white"
         >
           Next
         </button>

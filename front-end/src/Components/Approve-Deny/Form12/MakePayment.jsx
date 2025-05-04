@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import Lottie from "react-lottie";
 import loadingAnimation from "../../../assets/lottie/loadingAnime.json";
 import DataTable from "react-data-table-component";
+import { useDarkMode } from "../../Context/useDarkMode";
 
 const TotalRatesByUser = () => {
   const [userId, setUserId] = useState(null);
@@ -12,6 +13,42 @@ const TotalRatesByUser = () => {
   const [loading, setLoading] = useState(false);
   const [paymentProcessing, setPaymentProcessing] = useState(false);
   const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const { theme } = useDarkMode();
+  
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+
+  const customStyles = {
+    table: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      },
+    },
+    headRow: {
+      style: {
+        backgroundColor: isDarkMode ? "#2c2c2c" : "#f0f0f0",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    headCells: {
+      style: {
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    rows: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    pagination: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+  };
+
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
@@ -42,7 +79,7 @@ const TotalRatesByUser = () => {
           totalAmount: result.totalAmount,
           paymentStatus: form12.paymentStatus,
           fullName: result.fullName,
-          cropName: result.cropName,
+          cropName: form12.cropName,
         }));
         setData(tableData);
         setError(null); // Clear any previous error
@@ -207,11 +244,21 @@ const TotalRatesByUser = () => {
     },
   ];
 
+  const NoDataComponent = () => (
+    <div
+      className={`w-full py-2 text-center text-xl font-semibold ${
+        isDarkMode ? "text-gray-300 bg-[#1b1c1c]" : "text-gray-600 bg-white"
+      }`}
+    >
+      There are no records to display
+    </div>
+  );
+
   return (
-    <div className="flex bg-gray-100 justify-center p-4 ml-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-5xl relative">
+    <div className="flex bg-gray-100 justify-center p-4 ml-50 rounded-lg text-black dark:bg-[#1b1c1c] dark:text-gray-100">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-5xl relative text-black dark:bg-black dark:text-gray-100">
         {paymentProcessing && (
-          <div className="absolute inset-0 backdrop-blur-sm bg-white/30 flex items-center justify-center z-50 rounded-lg">
+          <div className="absolute inset-0 backdrop-blur-sm bg-white/30 flex items-center justify-center z-50 rounded-lg text-black dark:bg-black dark:text-gray-100">
             <Lottie
               options={{
                 animationData: loadingAnimation,
@@ -224,7 +271,7 @@ const TotalRatesByUser = () => {
           </div>
         )}
 
-        <h1 className="text-2xl font-semibold text-gray-700 mb-4">Make Payments</h1>
+        <h1 className="text-2xl font-semibold mb-4 text-black dark:bg-black dark:text-gray-100">Make Payments</h1>
 
         {loading && <p className="text-gray-500"> <Lottie
               options={{
@@ -242,9 +289,9 @@ const TotalRatesByUser = () => {
             columns={columns}
             data={data}
             pagination
-            highlightOnHover
-            striped
             responsive
+            customStyles={customStyles}
+            noDataComponent={<NoDataComponent />} 
           />
         )}
 

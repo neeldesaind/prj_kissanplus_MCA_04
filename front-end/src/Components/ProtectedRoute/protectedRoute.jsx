@@ -55,7 +55,7 @@ const ProtectedRoute = () => {
 
   // Define restricted routes based on roles
   const restrictedRoutes = {
-    admin: ["/side-bar/add-locations", "/side-bar/adduser","/side-bar/view-users", "/side-bar/view-profile","/side-bar/manage-namuna"],
+    admin: ["/side-bar/add-locations", "/side-bar/adduser","/side-bar/view-users", "/side-bar/view-profile","/side-bar/manage-namuna","/side-bar/contactusdetails"],
     farmer: ["/side-bar/namuna-7", "/side-bar/noc", "/side-bar/application","side-bar/farm-profile","/side-bar/submitted-forms","/side-bar/submitted-noc","/side-bar/submitted-exemption","/side-bar/payments"],
     talati: ["/side-bar/approve-deny-noc","/side-bar/approve-deny-exemption","/side-bar/view-noc","/side-bar/view-exemption","/side-bar/view-namuna"],
     karkoon: ["/side-bar/form12"],

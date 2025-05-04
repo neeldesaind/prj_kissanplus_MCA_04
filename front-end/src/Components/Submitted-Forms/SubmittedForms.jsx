@@ -28,12 +28,12 @@ function SubmittedForms() {
   }
 
   return (
-    <div className="p-4 flex justify-center mt-5 ml-50">
-      <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-5xl relative">
+    <div className="p-4 flex justify-center mt-5 ml-50 dark:bg-[#1b1c1c] dark:text-white">
+      <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-5xl relative dark:bg-black dark:text-white">
         {/* Filter Dropdown */}
         <div className="absolute right-4 top-4">
           <select
-            className="border rounded p-1"
+            className="border rounded p-1 dark:bg-[#1b1c1c] dark:text-white"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
           >

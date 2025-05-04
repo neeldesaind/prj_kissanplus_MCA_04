@@ -79,31 +79,31 @@ function ChangePassword() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="w-96 p-6 shadow-lg rounded-2xl bg-white">
-        <h2 className="text-2xl font-bold text-gray-700 mb-4 text-center">Change Password</h2>
+    <div className="flex justify-center items-center h-screen bg-gray-100 dark:bg-[#1b1c1c] dark:text-white">
+      <div className="w-96 p-6 shadow-lg rounded-2xl bg-white dark:bg-black dark:text-white">
+        <h2 className="text-2xl font-bold text-gray-700 mb-4 text-center dark:bg-black dark:text-white">Change Password</h2>
         {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
         <form onSubmit={handleChangePassword} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-600">Current Password</label>
+            <label className="block text-sm font-medium text-gray-600 dark:bg-black dark:text-white">Current Password</label>
             <input
               type="password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               required
-              className="mt-1 w-full border rounded p-2"
+              className="mt-1 w-full border rounded p-2 dark:bg-[#1b1c1c] dark:text-white"
               autoComplete="off"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-600">New Password</label>
+            <label className="block text-sm font-medium text-gray-600 dark:bg-black dark:text-white">New Password</label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
-                className="mt-1 w-full border rounded p-2 pr-10"
+                className="mt-1 w-full border rounded p-2 pr-10 dark:bg-[#1b1c1c] dark:text-white"
                 autoComplete="off"
               />
               <span
@@ -113,8 +113,8 @@ function ChangePassword() {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
-            <p className="text-xs text-gray-500 mt-1">Must contain:</p>
-            <ul className="text-xs text-gray-600 space-y-1 mt-1">
+            <p className="text-xs text-gray-500 mt-1 dark:bg-black dark:text-white">Must contain:</p>
+            <ul className="text-xs text-gray-600 space-y-1 mt-1 dark:bg-black dark:text-white">
               {Object.entries(criteria).map(([key, value]) => (
                 <li key={key} className="flex items-center">
                   {value ? <FaCheckCircle className="w-4 h-4 text-green-500" /> : <FaTimesCircle className="w-4 h-4 text-red-500" />}
@@ -130,14 +130,14 @@ function ChangePassword() {
             </ul>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-600">Confirm Password</label>
+            <label className="block text-sm font-medium text-gray-600 dark:bg-black dark:text-white">Confirm Password</label>
             <div className="relative">
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="mt-1 w-full border rounded p-2 pr-10"
+                className="mt-1 w-full border rounded p-2 pr-10 dark:bg-[#1b1c1c] dark:text-white"
                 autoComplete="off"
               />
               <span

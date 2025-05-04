@@ -98,13 +98,13 @@ const FarmerDashboard = () => {
   }
 
   return (
-    <div className="p-6 ml-30">
-      <div className="bg-white p-4 rounded-lg shadow-sm max-w-4xl mx-auto">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Farmer Dashboard</h2>
+    <div className="p-6 ml-30 text-black dark:bg-[#1b1c1c] dark:text-gray-100">
+      <div className="bg-white p-4 rounded-lg shadow-sm max-w-4xl mx-auto text-black dark:bg-black dark:text-gray-100">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4 text-black dark:bg-black dark:text-gray-100">Farmer Dashboard</h2>
 
         {/* Payments Section */}
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-8">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Payments Overview</h3>
+        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-8 text-black dark:bg-black dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-black dark:bg-black dark:text-gray-100">Payments Overview</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div className="bg-green-100 p-4 rounded-lg shadow-sm hover:bg-green-200 transition duration-300">
               <FaMoneyBillAlt className="text-3xl text-green-600 mb-2" />
@@ -125,8 +125,8 @@ const FarmerDashboard = () => {
         </div>
 
         {/* NOCs Section */}
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-8">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">NOCs Overview</h3>
+        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-8 text-black dark:bg-black dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-black dark:bg-black dark:text-gray-100">NOCs Overview</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-yellow-100 p-4 rounded-lg shadow-sm hover:bg-yellow-200 transition duration-300">
               <FaFileAlt className="text-3xl text-yellow-600 mb-2" />
@@ -146,8 +146,8 @@ const FarmerDashboard = () => {
         </div>
 
         {/* Namunas Section */}
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-8">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Namunas Overview</h3>
+        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-8 text-black dark:bg-black dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-black dark:bg-black dark:text-gray-100">Namunas Overview</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-orange-100 p-4 rounded-lg shadow-sm hover:bg-orange-200 transition duration-300">
               <FaFileAlt className="text-3xl text-orange-600 mb-2" />
@@ -167,8 +167,8 @@ const FarmerDashboard = () => {
         </div>
 
         {/* Exemptions Section */}
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Exemptions Overview</h3>
+        <div className="bg-gray-50 p-4 rounded-lg shadow-sm text-black dark:bg-black dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-black dark:bg-black dark:text-gray-100">Exemptions Overview</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-purple-100 p-4 rounded-lg shadow-sm hover:bg-purple-200 transition duration-300">
               <FaFileAlt className="text-3xl text-purple-600 mb-2" />

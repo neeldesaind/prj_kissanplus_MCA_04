@@ -48,6 +48,7 @@ import TotalRatesByUser from '../Approve-Deny/Form12/MakePayment.jsx';
 import Dashboard from '../Dashboard/Dashboard.jsx';
 import PaymentsList from '../Approve-Deny/Form12/PaymentsList.jsx';
 import ViewRateDetails from '../Approve-Deny/Form12/ViewRateDetails.jsx';
+import ContactDetails from '../Admin/Manage-Contactus/ContactDetails.jsx';
 
 
 const routermain = createBrowserRouter(
@@ -102,6 +103,8 @@ const routermain = createBrowserRouter(
           <Route path="all-payments" element={<PaymentsList />} />          
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="view/:id" element={<ViewRateDetails />} />
+          <Route path="contactusdetails" element={<ContactDetails />} />
+          
         </Route>
       </Route>
     </Route>

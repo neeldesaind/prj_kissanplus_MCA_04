@@ -5,7 +5,7 @@ import { Toaster, toast } from "react-hot-toast";
 import { useLocation } from "react-router";
 import { RiDashboard2Fill } from "react-icons/ri";
 import { MdPayment, MdOutlinePassword } from "react-icons/md";
-import { FaWpforms, FaAffiliatetheme, FaInfo } from "react-icons/fa";
+import { FaWpforms, FaAffiliatetheme, FaInfo, FaPhoneAlt } from "react-icons/fa";
 import { Bs7CircleFill } from "react-icons/bs";
 import { CiNoWaitingSign, CiSettings } from "react-icons/ci";
 import { TbNumber12Small } from "react-icons/tb";
@@ -186,9 +186,33 @@ const roleBasedRoutes = {
       label: "Requests",
       icon: <FaInfo />,
     },
+    {
+      label: "View Payments",
+      key: "admin-view-payments",
+      icon: <MdPayment />,  // Suitable icon for Namuna 7
+      path: "/side-bar/all-payments",  // Direct path to the Namuna 7 page
+    },
   ],
  
   admin: [
+    {
+      label: "Manage Namuna 7",
+      key: "admin-manage-namuna7",
+      icon: <PiNumberCircleSevenBold />,  // Suitable icon for Namuna 7
+      path: "/side-bar/manage-namuna",  // Direct path to the Namuna 7 page
+    },
+    {
+      label: "Contacts us details",
+      key: "admin-contactus",
+      icon: <FaPhoneAlt />,  // Suitable icon for Namuna 7
+      path: "/side-bar/contactusdetails",  // Direct path to the Namuna 7 page
+    },
+    {
+      label: "View Payments",
+      key: "admin-view-payments",
+      icon: <MdPayment />,  // Suitable icon for Namuna 7
+      path: "/side-bar/all-payments",  // Direct path to the Namuna 7 page
+    },
     {
       label: "Manage Users",
       key: "admin-manage-users",
@@ -239,18 +263,7 @@ const roleBasedRoutes = {
         },
       ],
     },
-    {
-      label: "Manage Namuna 7",
-      key: "admin-manage-namuna7",
-      icon: <PiNumberCircleSevenBold />,  // Suitable icon for Namuna 7
-      path: "/side-bar/manage-namuna",  // Direct path to the Namuna 7 page
-    },
-    {
-      label: "View Payments",
-      key: "admin-view-payments",
-      icon: <MdPayment />,  // Suitable icon for Namuna 7
-      path: "/side-bar/all-payments",  // Direct path to the Namuna 7 page
-    },
+   
   ],
 };
 
@@ -395,7 +408,7 @@ function SideBar({ userRole }) {
     <div className="flex">
       <Toaster position="top-center" reverseOrder={false} />
       <aside
-        className={`fixed top-0 left-0 h-screen bg-[#FBF6E9] transition-all duration-300 ${
+        className={`fixed top-0 left-0 h-screen bg-[#FBF6E9] dark:bg-black dark:text-gray-200 dark:white  transition-all duration-300 ${
           isOpen ? "w-64" : "w-16"
         } z-50`}
       >
@@ -417,7 +430,7 @@ function SideBar({ userRole }) {
 
           {/* Welcome Message */}
           {isOpen && (
-            <div className="p-4 text-green-700 text-lg font-bold">
+            <div className="p-4 text-green-700 text-lg font-bold dark:text-white dark:bg-black">
               Welcome, {firstName} {lastName}!
             </div>
           )}
@@ -429,7 +442,7 @@ function SideBar({ userRole }) {
                 <li key={item.label}>
                   <button
                     onClick={() => toggleDropdown(item.label)}
-                    className={`flex items-center w-full p-2 rounded-lg cursor-pointer ${
+                    className={`flex items-center w-full p-2 rounded-lg dark:bg-black dark:text-white dark:hover:bg-[#2f3030] cursor-pointer ${
                       isOpen ? "justify-between" : "justify-center"
                     }`}
                   >
@@ -456,8 +469,8 @@ function SideBar({ userRole }) {
                             className={({ isActive }) =>
                               `flex items-center p-2 rounded-lg ${
                                 isActive
-                                  ? "bg-[#E3F0AF] text-[#118B50]"
-                                  : "hover:bg-[#E3F0AF]"
+                                  ? "bg-[#E3F0AF] text-[#118B50] dark:bg-white dark:text-black"
+                                  : "text-gray-900 dark:text-white dark:hover:bg-[#2f3030] hover:bg-[#E3F0AF]"
                               } ${isOpen ? "justify-start" : "justify-center"}`
                             }
                           >
@@ -489,8 +502,8 @@ function SideBar({ userRole }) {
                       className={({ isActive }) =>
                         `flex items-center p-2 rounded-lg ${
                           isActive
-                            ? "bg-[#E3F0AF] text-[#118B50]"
-                            : "hover:bg-[#E3F0AF]"
+                            ? "bg-[#E3F0AF] text-[#118B50] dark:bg-white dark:text-black" 
+                            : "text-gray-900 dark:text-white dark:hover:bg-[#2f3030] hover:bg-[#E3F0AF]"
                         } ${isOpen ? "justify-start" : "justify-center"}`
                       }
                     >

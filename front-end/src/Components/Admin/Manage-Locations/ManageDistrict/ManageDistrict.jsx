@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { toast, Toaster } from "react-hot-toast";
+import {toast} from "react-hot-toast";
 import DataTable from "react-data-table-component";
+import { useDarkMode } from "../../../Context/useDarkMode";
 
 export default function AddDistrict() {
   const [districtName, setDistrictName] = useState("");
@@ -13,6 +14,42 @@ export default function AddDistrict() {
   const [editingDistrict, setEditingDistrict] = useState(null);
   const [loading, setLoading] = useState(false);
   const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const { theme } = useDarkMode();
+  
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  const customStyles = {
+    table: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      },
+    },
+    headRow: {
+      style: {
+        backgroundColor: isDarkMode ? "#2c2c2c" : "#f0f0f0",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    headCells: {
+      style: {
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    rows: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    pagination: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+  };
+
+
   // Fetch states
   useEffect(() => {
     const fetchStates = async () => {
@@ -180,16 +217,24 @@ export default function AddDistrict() {
     },
   ];
 
-  return (
-    <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-10 ">
-      <h2 className="text-xl font-bold mb-6 text-center">Manage District</h2>
-      <Toaster position="top-center" reverseOrder={false} />
+  const NoDataComponent = () => (
+    <div
+      className={`w-full py-2 text-center text-xl font-semibold ${
+        isDarkMode ? "text-gray-300 bg-[#1b1c1c]" : "text-gray-600 bg-white"
+      }`}
+    >
+      There are no records to display
+    </div>
+  );
 
+  return (
+    <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-10 dark:bg-black dark:text-gray-100">
+      <h2 className="text-xl font-bold mb-6 text-center dark:bg-black dark:text-gray-100">Manage District</h2>
       {/* Add District Form */}
-      <form onSubmit={handleAddDistrict} className="space-y-4">
-        <label className="block font-medium text-sm">Select State</label>
+      <form onSubmit={handleAddDistrict} className="space-y-4 dark:bg-black dark:text-gray-100">
+        <label className="block font-medium text-sm dark:bg-black dark:text-gray-100">Select State</label>
         <select
-          className="w-full p-3 border rounded text-sm"
+          className="w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           value={selectedState}
           onChange={(e) => setSelectedState(e.target.value)}
           required
@@ -206,9 +251,9 @@ export default function AddDistrict() {
           )}
         </select>
 
-        <label className="block font-medium text-sm">District Name</label>
+        <label className="block font-medium text-sm dark:bg-black dark:text-gray-100">District Name</label>
         <input
-          className="w-full p-3 border rounded text-sm"
+          className=" w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           type="text"
           value={districtName}
           onChange={(e) => setDistrictName(e.target.value)}
@@ -227,7 +272,7 @@ export default function AddDistrict() {
       {selectedState && (
         <input
           type="text"
-          className="w-full p-3 border rounded mt-4 text-sm"
+          className="w-full p-3 border rounded mt-4 text-sm dark:bg-black dark:text-gray-100"
           placeholder="Search districts..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -236,7 +281,7 @@ export default function AddDistrict() {
 
       {/* DataTable for Districts */}
       {selectedState && (
-        <div className="mt-6">
+        <div className="mt-6 dark:bg-black dark:text-gray-100">
           {loading ? (
             <p className="text-gray-500 text-sm">Loading districts...</p>
           ) : (
@@ -244,6 +289,8 @@ export default function AddDistrict() {
               columns={columns}
               data={filteredDistricts}
               pagination
+              customStyles={customStyles}
+              noDataComponent={<NoDataComponent />} 
             />
           )}
         </div>

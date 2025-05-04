@@ -22,31 +22,29 @@ const Namuna7 = () => {
     const checkNamunaDates = async () => {
       setLoading(true); // Move setLoading(true) here to avoid potential timing issues
       const namunaData = await fetchNamunaDates();
-      
+
       if (namunaData && namunaData.length > 0) {
         const currentDate = new Date();
         const { startDate, endDate } = namunaData[0]; // Assuming there is only one active Namuna application
         setStartDate(startDate);
         setEndDate(endDate);
-  
+
         const isWithinDateRange =
-          currentDate >= new Date(startDate) && currentDate <= new Date(endDate);
-  
+          currentDate >= new Date(startDate) &&
+          currentDate <= new Date(endDate);
+
         setIsNamunaActive(isWithinDateRange);
       } else {
         // Optional: Handle case where namunaData is empty or undefined
         setIsNamunaActive(false);
       }
-  
+
       setLoading(false); // Reset loading state after checking
     };
-  
+
     checkNamunaDates();
   }, []); // Empty dependency array to run only on mount
-  
-  
 
-  
   const [formData, setFormData] = useState({
     farmerName: "",
     residentOf: "",
@@ -73,7 +71,6 @@ const Namuna7 = () => {
   const [userId, setUserId] = useState(null);
   const [farmCanals, setFarmCanals] = useState([[]]);
   useEffect(() => {
-
     const storedId = localStorage.getItem("userId");
     if (storedId) {
       setUserId(storedId);
@@ -86,7 +83,10 @@ const Namuna7 = () => {
       const data = await response.json();
       return data; // Assuming the response returns an array of applications
     } catch (error) {
-      console.error("Complete your profile and farm with location data.", error);
+      console.error(
+        "Complete your profile and farm with location data.",
+        error
+      );
       return null;
     }
   };
@@ -95,7 +95,6 @@ const Namuna7 = () => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(date).toLocaleDateString(undefined, options);
   };
-  
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -228,8 +227,7 @@ const Namuna7 = () => {
       // If typing in the custom crop input
       else if (field === "customCrop") {
         updatedFarms[index]["customCrop"] = value;
-      }
-      else {
+      } else {
         updatedFarms[index][field] = value;
 
         if (field === "villageName") {
@@ -264,7 +262,9 @@ const Namuna7 = () => {
   };
   const fetchCanalsForFarm = async (index, villageId) => {
     try {
-      const response = await axios.get(`${BASE_URL}/api/canals/village/${villageId}`);
+      const response = await axios.get(
+        `${BASE_URL}/api/canals/village/${villageId}`
+      );
       const newCanals = response.data.canals || [];
       const updatedCanals = [...farmCanals];
       updatedCanals[index] = newCanals;
@@ -321,7 +321,11 @@ const Namuna7 = () => {
       const totalArea = parseFloat(farm.totalAreaVigha);
       const requestedArea = parseFloat(farm.requestedWaterVigha);
       if (requestedArea > totalArea) {
-        toast.error(`Requested area in farm entry ${i + 1} cannot be greater than total area`);
+        toast.error(
+          `Requested area in farm entry ${
+            i + 1
+          } cannot be greater than total area`
+        );
         return;
       }
     }
@@ -347,18 +351,19 @@ const Namuna7 = () => {
           irrigationYear: new Date(farm.irrigationYear),
         })),
       };
-     
 
-     const response = await axios.post(
+      const response = await axios.post(
         `${BASE_URL}/api/namuna7/saveNamuna7`,
         payload
       );
-      if (response.data.message === "Namuna7 application has already been submitted for this date range.") {
+      if (
+        response.data.message ===
+        "Namuna7 application has already been submitted for this date range."
+      ) {
         alert("You have already submitted an application for this date range.");
       } else {
         toast.success("Application submitted successfully!");
       }
-    
     } catch (err) {
       console.error("Submit failed:", err);
     }
@@ -368,32 +373,35 @@ const Namuna7 = () => {
 
   if (!isNamunaActive) {
     return (
-      <div className="flex justify-center py-12">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-semibold text-red-600 mb-4">Namuna7 Application Not Active</h2>
-        <p className="text-lg text-gray-600 mb-4">
-          The Namuna7 application is currently not available. It is only active between <br />
-          <strong>{formatDate(startDate)}</strong> and <strong>{formatDate(endDate)}</strong>.
-        </p>
-        <p className="text-lg text-gray-600 mb-6">
-          Please check back later when the application period is active.
-        </p>
-        <button
-          className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 w-full"
-          onClick={() => navigate("/side-bar/dashboard")}
-          aria-label="Go to Dashboard"
-        >
-          Go to Dashboard
-        </button>
+      <div className="flex justify-center py-12 dark:bg-[#1b1c1c] dark:text-gray-100">
+        <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg dark:bg-black dark:text-gray-100">
+          <h2 className="text-2xl font-semibold text-red-600 mb-4">
+            Namuna7 Application Not Active
+          </h2>
+          <p className="text-lg text-gray-600 mb-4 dark:bg-black dark:text-gray-100">
+            The Namuna7 application is currently not available. It is only
+            active between <br />
+            <strong>{formatDate(startDate)}</strong> and{" "}
+            <strong>{formatDate(endDate)}</strong>.
+          </p>
+          <p className="text-lg text-gray-600 mb-6 dark:bg-black dark:text-gray-100">
+            Please check back later when the application period is active.
+          </p>
+          <button
+            className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 w-full"
+            onClick={() => navigate("/side-bar/dashboard")}
+            aria-label="Go to Dashboard"
+          >
+            Go to Dashboard
+          </button>
+        </div>
       </div>
-    </div>
-    
     );
   }
 
   return (
-    <div className="flex flex-col p-6 space-y-6 bg-gray-100 min-h-screen ml-50">
-      <div className="bg-white p-6 shadow-lg rounded-lg max-w-5xl mx-auto">
+    <div className="flex flex-col p-6 space-y-6 bg-gray-100 dark:bg-[#1b1c1c] min-h-screen ml-50">
+      <div className="bg-white dark:bg-black dark:text-gray-100 p-6 shadow-lg rounded-lg max-w-5xl mx-auto">
         <h4 className="text-xl font-bold mb-4 text-center">NAMUNO-7</h4>
         <h4 className="text-l font-bold mb-4 text-center">
           Application to Executive Engineer for supply of water from canal
@@ -406,7 +414,7 @@ const Namuna7 = () => {
               name="farmerName"
               value={formData.farmerName}
               onChange={handleInputChange}
-              className="border-b border-gray-500 focus:outline-none focus:border-black p-1 mx-2 text-sm w-40"
+              className="border-b border-gray-500 text-black dark:bg-black dark:text-gray-100 focus:outline-none focus:border-black p-1 mx-2 text-sm w-40"
               placeholder="Farmer Name"
               disabled
             />
@@ -416,7 +424,7 @@ const Namuna7 = () => {
               name="residentOf"
               value={formData.residentOf}
               onChange={handleInputChange}
-              className="border-b border-gray-500 focus:outline-none focus:border-black p-1 mx-2 text-sm w-40"
+              className="border-b border-gray-500 text-black dark:bg-black dark:text-gray-100 focus:outline-none focus:border-black p-1 mx-2 text-sm w-40"
               placeholder="Resident of"
               disabled
             />
@@ -426,7 +434,7 @@ const Namuna7 = () => {
               name="subDistrict"
               value={formData.subDistrict}
               onChange={handleInputChange}
-              className="border-b border-gray-500 focus:outline-none focus:border-black p-1 mx-2 text-sm w-40"
+              className="border-b border-gray-500 text-black dark:bg-black dark:text-gray-100 focus:outline-none focus:border-black p-1 mx-2 text-sm w-40"
               placeholder="Sub-District"
               disabled
             />
@@ -436,7 +444,7 @@ const Namuna7 = () => {
               name="district"
               value={formData.district}
               onChange={handleInputChange}
-              className="border-b border-gray-500 focus:outline-none focus:border-black p-1 mx-2 text-sm w-40"
+              className="border-b border-gray-500 text-black dark:bg-black dark:text-gray-100 focus:outline-none focus:border-black p-1 mx-2 text-sm w-40"
               placeholder="District"
               disabled
             />
@@ -481,7 +489,7 @@ const Namuna7 = () => {
         <div className="overflow-x-auto">
           <table className="table-auto w-full border border-gray-300 text-sm mt-4">
             <thead>
-              <tr className="bg-gray-300 text-gray-900 text-center">
+              <tr className="bg-gray-300 text-gray-900 dark:bg-[#1b1c1c] dark:text-gray-100 text-center">
                 <th className="p-2 border">Village Name</th>
                 <th className="p-2 border">Canal Name</th>
                 <th className="p-2 border">Survey Number</th>
@@ -501,7 +509,7 @@ const Namuna7 = () => {
                       type="text"
                       value={farm.villageName || ""}
                       readOnly
-                      className="border rounded p-2 w-full text-sm bg-gray-100"
+                      className="border rounded p-2 w-full text-sm"
                       placeholder="Village Name"
                     />
                   </td>
@@ -511,7 +519,7 @@ const Namuna7 = () => {
                       onChange={(e) =>
                         handleInputChange(e, index, "canalNumber")
                       }
-                      className="border rounded p-2 w-full text-sm"
+                      className="border rounded p-2 w-full text-gray-900 dark:bg-black dark:text-gray-100 text-sm"
                     >
                       {/*<option value="">Select Canal</option> */}
                       {farmCanals[index]?.map((canal) => (
@@ -571,7 +579,7 @@ const Namuna7 = () => {
                   </td>
                   <td className="p-2 border">
                     <select
-                      className="border rounded p-2 w-full text-sm"
+                      className="border rounded p-2 text-gray-900 dark:bg-black dark:text-gray-100 w-full text-sm"
                       name="cropName"
                       value={farm.cropName}
                       onChange={(e) => handleInputChange(e, index, "cropName")}
@@ -615,6 +623,12 @@ const Namuna7 = () => {
                       className="border rounded p-2 w-full text-sm"
                       placeholder="Irrigation Year"
                     />
+
+                    <style>{`
+            .dark input[type="date"]::-webkit-calendar-picker-indicator {
+              filter: invert(1) brightness(2);
+            }
+          `}</style>
                   </td>
                   <td className="p-2 border">
                     <button
@@ -640,7 +654,7 @@ const Namuna7 = () => {
             type="text"
             value="Owner"
             disabled
-            className="border rounded p-1 text-sm bg-gray-200 text-gray-700 w-32"
+            className="border rounded p-1 text-sm bg-gray-200 text-gray-900 dark:bg-[#1b1c1c] dark:text-gray-100 w-32"
           />{" "}
           of land for which request application is made above.
         </p>
@@ -648,7 +662,7 @@ const Namuna7 = () => {
         <p className="mb-3">
           3. Till
           <select
-            className="border rounded p-1 mx-2 text-sm"
+            className="border rounded p-1 mx-2 text-sm text-gray-900 dark:bg-black dark:text-gray-100"
             name="year"
             value={formData.year}
             onChange={handleInputChange}
@@ -659,7 +673,7 @@ const Namuna7 = () => {
           </select>
           For
           <select
-            className="border rounded p-1 mx-2 text-sm"
+            className="border rounded p-1 mx-2 text-sm text-gray-900 dark:bg-black dark:text-gray-100"
             name="season"
             value={formData.season}
             onChange={handleSeasonChange}

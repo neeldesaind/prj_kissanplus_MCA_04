@@ -1,4 +1,4 @@
-export const paymentConfirmationEmailTemplate = (firstName, amount, cropName, transactionId, paymentDate) => `
+export const paymentConfirmationEmailTemplate = (firstName, amount, transactionId, paymentDate) => `
   <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;
               border: 1px solid #e0e0e0; border-radius: 10px;">
     <div style="text-align: center; margin-bottom: 20px;">
@@ -9,7 +9,7 @@ export const paymentConfirmationEmailTemplate = (firstName, amount, cropName, tr
 
     <h2 style="color: #4CAF50;">Hello, ${firstName}!</h2>
     <p style="font-size: 16px; color: #333;">
-      We’ve received your payment successfully. Thank you for making the payment towards your irrigation charges for <strong>${cropName}</strong>.
+      We’ve received your payment successfully. Thank you for making the payment towards your irrigation charges for <strong></strong>.
     </p>
 
     <p style="font-size: 16px; color: #333; margin-top: 10px;">

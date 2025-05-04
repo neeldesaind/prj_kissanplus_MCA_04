@@ -17,7 +17,20 @@ const ViewRateDetails = () => {
   const fetchForm12 = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/api/form12/${id}`);
-      setForm12(res.data);
+      const data = res.data;
+  
+      // Normalize dates
+      if (data.approvedByEngineerAt?.$date) {
+        data.approvedByEngineerAt = data.approvedByEngineerAt.$date;
+      }
+      if (data.deniedByEngineerAt?.$date) {
+        data.deniedByEngineerAt = data.deniedByEngineerAt.$date;
+      }
+      if (data.date_of_supply?.$date) {
+        data.date_of_supply = data.date_of_supply.$date;
+      }
+  
+      setForm12(data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching form12:", error);
@@ -59,18 +72,18 @@ const ViewRateDetails = () => {
 
   const renderApprovalStatus = () => {
     if (form12.isApprovedByEngineer) {
-      const approvedDate = form12.approvedByEngineerAt?.$date
-        ? new Date(form12.approvedByEngineerAt.$date).toLocaleString()
-        : (form12.approvedByEngineerAt ? new Date(form12.approvedByEngineerAt).toLocaleString() : "Not Available");
-
+      const approvedDate = form12.approvedByEngineerAt
+        ? new Date(form12.approvedByEngineerAt).toLocaleString()
+        : "Not Available";
+  
       return (
         <p><strong>Status:</strong> <span className="text-green-500">Approved at {approvedDate}</span></p>
       );
     } else if (form12.isDeniedByEngineer) {
-      const deniedDate = form12.deniedByEngineerAt?.$date
-        ? new Date(form12.deniedByEngineerAt.$date).toLocaleString()
-        : (form12.deniedByEngineerAt ? new Date(form12.deniedByEngineerAt).toLocaleString() : "Not Available");
-
+      const deniedDate = form12.deniedByEngineerAt
+        ? new Date(form12.deniedByEngineerAt).toLocaleString()
+        : "Not Available";
+  
       return (
         <p><strong>Status:</strong> <span className="text-red-500">Denied at {deniedDate}</span></p>
       );
@@ -78,7 +91,6 @@ const ViewRateDetails = () => {
       return <p><strong>Status:</strong> <span className="text-orange-500">Pending</span></p>;
     }
   };
-
   if (loading)
     return (
       <div className="flex justify-center items-center h-screen">
@@ -87,10 +99,10 @@ const ViewRateDetails = () => {
     );
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg mt-8">
-      <h1 className="text-2xl font-bold mb-4">Form12 Details</h1>
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg mt-8 dark:bg-black dark:text-gray-100">
+      <h1 className="text-2xl font-bold mb-4 dark:bg-black dark:text-gray-100">Form12 Details</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 dark:bg-black dark:text-gray-100">
         <div>
           <p><strong>Farmer Name:</strong> {form12.farmerName}</p>
           <p><strong>Survey Number:</strong> {form12.surveyNumber}</p>

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import DataTable from "react-data-table-component";
+import { useDarkMode } from "../../../Context/useDarkMode";
 
 export default function AddCanal() {
   const [canalName, setCanalName] = useState("");
@@ -27,6 +28,41 @@ export default function AddCanal() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCanals, setTotalCanals] = useState(0);
   const itemsPerPage = 5; // Items per page for pagination
+  const { theme } = useDarkMode();
+
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  const customStyles = {
+    table: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      },
+    },
+    headRow: {
+      style: {
+        backgroundColor: isDarkMode ? "#2c2c2c" : "#f0f0f0",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    headCells: {
+      style: {
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    rows: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    pagination: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+  };
+
 
   // Fetch States
   useEffect(() => {
@@ -256,14 +292,24 @@ export default function AddCanal() {
     },
   ];
 
+  const NoDataComponent = () => (
+    <div
+      className={`w-full py-2 text-center text-xl font-semibold ${
+        isDarkMode ? "text-gray-300 bg-[#1b1c1c]" : "text-gray-600 bg-white"
+      }`}
+    >
+      There are no records to display
+    </div>
+  );
+
   return (
-    <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-10">
-      <h2 className="font-bold mb-6 text-center text-xl">Manage Canal</h2>
-      <form onSubmit={handleAddCanal} className="space-y-4">
+    <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-10 text-black dark:bg-black dark:text-gray-100">
+      <h2 className="font-bold mb-6 text-center text-xl dark:bg-black dark:text-gray-100">Manage Canal</h2>
+      <form onSubmit={handleAddCanal} className="space-y-4 dark:bg-black dark:text-gray-100">
         {/* Select State */}
-        <label className="block font-medium text-sm">Select State</label>
+        <label className="block font-medium text-sm dark:bg-black dark:text-gray-100">Select State</label>
         <select
-          className="w-full p-3 border rounded text-sm"
+          className="w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           value={selectedState}
           onChange={(e) => setSelectedState(e.target.value)}
           required
@@ -277,9 +323,9 @@ export default function AddCanal() {
         </select>
 
         {/* Select District */}
-        <label className="block font-medium text-sm">Select District</label>
+        <label className="block font-medium text-sm dark:bg-black dark:text-gray-100">Select District</label>
         <select
-          className="w-full p-3 border rounded text-sm"
+          className="w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           value={selectedDistrict}
           onChange={(e) => setSelectedDistrict(e.target.value)}
           required
@@ -294,9 +340,9 @@ export default function AddCanal() {
         </select>
 
         {/* Select Sub-District */}
-        <label className="block font-medium text-sm">Select Sub-District</label>
+        <label className="block font-medium text-sm dark:bg-black dark:text-gray-100">Select Sub-District</label>
         <select
-          className="w-full p-3 border rounded text-sm"
+          className="w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           value={selectedSubDistrict}
           onChange={(e) => setSelectedSubDistrict(e.target.value)}
           required
@@ -311,9 +357,9 @@ export default function AddCanal() {
         </select>
 
         {/* Select Village */}
-        <label className="block font-medium text-sm">Select Village</label>
+        <label className="block font-medium text-sm dark:bg-black dark:text-gray-100">Select Village</label>
         <select
-          className="w-full p-3 border rounded text-sm"
+          className="w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           value={selectedVillage}
           onChange={(e) => setSelectedVillage(e.target.value)}
           required
@@ -334,12 +380,12 @@ export default function AddCanal() {
         </select>
 
         {/* Canal Name */}
-        <label className="block font-medium text-sm">Canal Name</label>
+        <label className="block font-medium text-sm dark:bg-black dark:text-gray-100">Canal Name</label>
         <input
           type="text"
           value={canalName}
           onChange={(e) => setCanalName(e.target.value)}
-          className="w-full p-3 border rounded text-sm"
+          className="w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           placeholder="Enter canal name"
           required
         />
@@ -356,7 +402,7 @@ export default function AddCanal() {
       {/* Canal List - Display only when a village is selected */}
       {selectedVillage && canals.length > 0 && (
         <div className="mt-10">
-          <h3 className="font-semibold mb-4 text-sm">Canals List</h3>
+          <h3 className="font-semibold mb-4 text-sm dark:bg-black dark:text-gray-100">Canals List</h3>
           <DataTable
             columns={columns}
             data={canals}
@@ -365,6 +411,8 @@ export default function AddCanal() {
             paginationTotalRows={totalCanals}
             onChangePage={handlePageChange}
             persistTableHead
+            customStyles={customStyles}
+            noDataComponent={<NoDataComponent />}
           />
         </div>
       )}

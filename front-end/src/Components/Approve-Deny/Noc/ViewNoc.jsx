@@ -6,6 +6,7 @@ import { BsFillCheckCircleFill, BsFillXCircleFill } from "react-icons/bs";
 import DataTable from "react-data-table-component";
 import loadingAnime from "../../../assets/lottie/loadingAnime.json";
 import Lottie from "lottie-react";
+import { useDarkMode } from "../../Context/useDarkMode";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -14,6 +15,46 @@ const ViewNoc = () => {
   const [loading, setLoading] = useState(true);
   const { nocId } = useParams();
   const navigate = useNavigate();
+  const { theme } = useDarkMode();
+
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  const customStyles = {
+    table: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      },
+    },
+    headRow: {
+      style: {
+        backgroundColor: isDarkMode ? "#2c2c2c" : "#f0f0f0",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    headCells: {
+      style: {
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    rows: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    striped: {
+      style: {
+        backgroundColor: isDarkMode ? "#232323" : "#f9f9f9",
+      },
+    },
+    pagination: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+  };
+
 
   useEffect(() => {
     const fetchNocDetails = async () => {
@@ -132,12 +173,12 @@ const ViewNoc = () => {
     );
 
   if (!nocData) {
-    return <div>NOC not found</div>;
+    return <div className="dark:bg-black dark:text-gray-100">NOC not found</div>;
   }
 
   return (
-    <div className="max-w-5xl mx-auto mb-10 mt-6 ml-80">
-      <div className="bg-white shadow-md rounded-lg p-6">
+    <div className="max-w-5xl mx-auto mb-10 mt-6 ml-80 dark:bg-[#1b1c1c] dark:text-gray-100">
+      <div className="bg-white shadow-md rounded-lg p-6 dark:bg-black dark:text-gray-100">
         <h1 className="text-2xl font-bold text-center mb-2">NOC Details</h1>
 
         <div className="mb-4">
@@ -149,31 +190,32 @@ const ViewNoc = () => {
         <div className="mb-4">
           <strong>Reason for NOC:</strong> {nocData.reason_for_noc}
         </div>
-        <div className="mb-4">
+        <div className="mb-4 dark:bg-black dark:text-gray-100">
           <strong>Status:</strong> {renderStatus()}
         </div>
         {nocData?.isApprovedbyTalatiAt && (
-          <div className="mb-4">
+          <div className="mb-4 dark:bg-black dark:text-gray-100">
             <strong>Approved On:</strong> {renderApprovalDate()}
           </div>
         )}
         {nocData?.isDeniedByTalatiAt && (
-          <div className="mb-4">
+          <div className="mb-4 dark:bg-black dark:text-gray-100">
             <strong>Denied On:</strong> {renderDenialDate()}
           </div>
         )}
 
-        <div className="mb-4">
+        <div className="mb-4 dark:bg-black dark:text-gray-100">
           <strong>Farm Details:</strong>
           <DataTable
             columns={columns}
             data={data}
             pagination
             responsive
+            customStyles={customStyles}
           />
         </div>
 
-        <div className="flex justify-between mt-6">
+        <div className="flex justify-between mt-6 dark:bg-black dark:text-gray-100">
           <button
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             onClick={() => navigate("/side-bar/approve-deny-noc")}

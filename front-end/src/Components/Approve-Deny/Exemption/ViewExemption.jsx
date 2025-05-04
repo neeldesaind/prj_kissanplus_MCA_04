@@ -6,6 +6,7 @@ import { BsFillCheckCircleFill, BsFillXCircleFill } from "react-icons/bs";
 import DataTable from "react-data-table-component";
 import loadingAnime from "../../../assets/lottie/loadingAnime.json";
 import Lottie from "lottie-react";
+import { useDarkMode } from "../../Context/useDarkMode";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -14,6 +15,43 @@ const ViewExemption = () => {
   const [loading, setLoading] = useState(true);
   const { exemptionId } = useParams();
   const navigate = useNavigate();
+  const { theme } = useDarkMode();
+
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+
+  const customStyles = {
+    table: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      },
+    },
+    headRow: {
+      style: {
+        backgroundColor: isDarkMode ? "#2c2c2c" : "#f0f0f0",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    headCells: {
+      style: {
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    rows: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    pagination: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+  };
+
+
 
   useEffect(() => {
     const fetchExemptionDetails = async () => {
@@ -133,16 +171,27 @@ const ViewExemption = () => {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center h-screen dark:bg-black dark:text-gray-100">
         <Lottie animationData={loadingAnime} className="w-40 h-40" />
       </div>
     );
   if (!exemptionData) return <div>Exemption not found</div>;
 
+  const NoDataComponent = () => (
+    <div
+      className={`w-full py-2 text-center text-xl font-semibold ${
+        isDarkMode ? "text-gray-300 bg-[#1b1c1c]" : "text-gray-600 bg-white"
+      }`}
+    >
+      There are no records to display
+    </div>
+  );
+
+
   return (
-    <div className="max-w-5xl mx-auto mb-10 mt-6 ml-80">
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <h1 className="text-2xl font-bold text-center mb-2">
+    <div className="max-w-5xl mx-auto mb-10 mt-6 ml-80 dark:bg-[#1b1c1c] dark:text-gray-100">
+      <div className="bg-white shadow-md rounded-lg p-6 dark:bg-black dark:text-gray-100">
+        <h1 className="text-2xl font-bold text-center mb-2 dark:bg-black dark:text-gray-100">
           Exemption Details
         </h1>
 
@@ -166,13 +215,15 @@ const ViewExemption = () => {
           <strong>Status:</strong> {renderStatus()}
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 dark:bg-black dark:text-gray-100">
           <strong>Farm Details:</strong>
           <DataTable
             columns={columns}
             data={exemptionData.farmDetails}
             pagination
             responsive
+            customStyles={customStyles}
+            noDataComponent={<NoDataComponent />} 
           />
         </div>
 

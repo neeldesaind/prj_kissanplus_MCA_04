@@ -32,14 +32,14 @@ const TalatiDashboard = () => {
 
   return (
     <div className="p-6 ml-30">
-      <div className="bg-white p-4 rounded-lg shadow-sm max-w-3xl mx-auto">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+      <div className="bg-white p-4 rounded-lg shadow-sm max-w-3xl mx-auto text-black dark:bg-black dark:text-gray-100">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4 text-black dark:bg-black dark:text-gray-100">
           Talati Dashboard
         </h2>
 
         {/* Total Income Overview */}
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6 text-black dark:bg-black dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-black dark:bg-black dark:text-gray-100">
             Income Overview
           </h3>
           <div className="bg-blue-100 p-4 rounded-lg shadow-sm hover:bg-blue-200 transition duration-300">
@@ -55,8 +55,8 @@ const TalatiDashboard = () => {
         </div>
 
         {/* Applications Overview */}
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6 text-black dark:bg-black dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-black dark:bg-black dark:text-gray-100">
             Applications Overview
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -99,8 +99,8 @@ const TalatiDashboard = () => {
         </div>
 
         {/* Total Users Overview */}
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+        <div className="bg-gray-50 p-4 rounded-lg shadow-sm text-black dark:bg-black dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-black dark:bg-black dark:text-gray-100">
             Total Users
           </h3>
           <div className="bg-yellow-100 p-4 rounded-lg shadow-sm hover:bg-yellow-200 transition duration-300">

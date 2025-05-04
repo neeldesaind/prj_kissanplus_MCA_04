@@ -83,18 +83,13 @@ const FarmApplication = () => {
           const farmsWithVillageNames = await Promise.all(
             farmArray.map(async (farm) => {
               try {
-                const villageRes = await axios.get(
-                  `${BASE_URL}/api/villages/${farm.village_id}`
-                );
+                const villageRes = await axios.get(`${BASE_URL}/api/villages/${farm.village_id}`);
                 return {
                   ...farm,
                   village_name: villageRes.data.village_name || "",
                 };
               } catch (err) {
-                console.warn(
-                  `Failed to fetch village for farm with ID ${farm._id} and village_id ${farm.village_id},error:`,
-                  err
-                );
+                console.warn(`Failed to fetch village for farm with ID ${farm._id} and village_id ${farm.village_id},error:`, err);
                 return {
                   ...farm,
                   village_name: "", // fallback to empty
@@ -102,6 +97,7 @@ const FarmApplication = () => {
               }
             })
           );
+          
 
           setFarmDetails(farmsWithVillageNames);
         } catch (farmErr) {
@@ -185,22 +181,22 @@ const FarmApplication = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 ml-80">
-      <div className="bg-white shadow-md rounded-lg p-6">
+    <div className="max-w-5xl mx-auto p-6 ml-80 dark:bg-[#1b1c1c] dark:text-white">
+      <div className="bg-white shadow-md rounded-lg p-6 dark:bg-black dark:text-white">
         <h1 className="text-xl font-bold text-center mb-2">Application</h1>
         <h1 className="text-md font-medium text-center mb-4">
           Application for having own well
         </h1>
 
         {/* Declaration Section */}
-        <div className="mb-4 p-6 rounded-md bg-gray-50">
+        <div className="mb-4 p-6 rounded-md bg-gray-50 dark:bg-black dark:text-white">
           <h2 className="text-md font-semibold mb-2">Declaration</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="inline-flex items-center gap-2 w-full">
               <span>I</span>
               <input
                 type="text"
-                className="border-b border-gray-500 bg-transparent p-1 flex-1 focus:outline-none"
+                className="border-b border-gray-500 bg-transparent p-1 flex-1 focus:outline-none dark:hover:bg-black dark:bg-[#2f3030] dark:placeholder-gray-400 dark:text-white"
                 value={userData.farmerName}
                 disabled
               />
@@ -210,7 +206,7 @@ const FarmApplication = () => {
               <span>Resident Of</span>
               <input
                 type="text"
-                className="border-b border-gray-500 bg-transparent p-1 flex-1 focus:outline-none"
+                className="border-b border-gray-500 bg-transparent p-1 flex-1 focus:outline-none dark:hover:bg-black dark:bg-[#2f3030] dark:placeholder-gray-400 dark:text-white"
                 value={userData.village}
                 disabled
               />
@@ -220,7 +216,7 @@ const FarmApplication = () => {
               <span>Sub-District</span>
               <input
                 type="text"
-                className="border-b border-gray-500 bg-transparent p-1 flex-1 focus:outline-none"
+                className="border-b border-gray-500 bg-transparent p-1 flex-1 focus:outline-none dark:hover:bg-black dark:bg-[#2f3030] dark:placeholder-gray-400 dark:text-white"
                 value={userData.subDistrict}
                 disabled
               />
@@ -230,7 +226,7 @@ const FarmApplication = () => {
               <span>District</span>
               <input
                 type="text"
-                className="border-b border-gray-500 bg-transparent p-1 flex-1 focus:outline-none"
+                className="border-b border-gray-500 bg-transparent p-1 flex-1 focus:outline-none dark:hover:bg-black dark:bg-[#2f3030] dark:placeholder-gray-400 dark:text-white"
                 value={userData.district}
                 disabled
               />
@@ -244,7 +240,7 @@ const FarmApplication = () => {
             </p>
             <div className="flex gap-4 items-center">
               <select
-                className="border-b border-gray-500 bg-transparent p-1 focus:outline-none"
+                className="border-b border-gray-500 bg-transparent p-1 focus:outline-none dark:hover:bg-black dark:bg-[#2f3030] dark:placeholder-gray-400 dark:text-white"
                 value={waterSource}
                 onChange={(e) => setWaterSource(e.target.value)}
               >
@@ -284,7 +280,7 @@ const FarmApplication = () => {
         <hr className="border-y-green-500" />
 
         {/* Farm Details Section */}
-        <div className="mb-4 p-6 rounded-md bg-gray-50 shadow-lg">
+        <div className="mb-4 p-6 rounded-md bg-gray-50 shadow-lg dark:bg-black dark:placeholder-gray-400 dark:text-white">
           <h2 className="text-md font-semibold mb-2">Farm Details</h2>
           <p className="text-sm text-gray-500 mb-3">
             Please fill in the farm details below.
@@ -297,9 +293,7 @@ const FarmApplication = () => {
                   <th className="text-center">Survey Number</th>
                   <th className="text-center">Poat Number</th>
                   <th className="text-center">Total Area</th>
-                  {farmDetails.length > 1 && (
-                    <th className="text-center">Actions</th>
-                  )}
+                  {farmDetails.length > 1 && <th className="text-center">Actions</th>}
                 </tr>
                 <tr className="bg-gray-100">
                   <th></th>
@@ -314,7 +308,7 @@ const FarmApplication = () => {
                     <td className="p-2">
                       <input
                         type="text"
-                        className="border p-2 rounded w-full"
+                        className="border p-2 rounded w-full dark:hover:bg-black dark:bg-[#1b1c1c] dark:placeholder-gray-400 dark:text-white"
                         value={farm.village_name || ""}
                         readOnly
                       />
@@ -322,7 +316,7 @@ const FarmApplication = () => {
                     <td className="p-2">
                       <input
                         type="text"
-                        className="border p-2 rounded w-full"
+                        className="border p-2 rounded w-full dark:hover:bg-black dark:bg-[#1b1c1c] dark:placeholder-gray-400 dark:text-white"
                         value={farm.surveyNumber || ""}
                         readOnly
                       />
@@ -330,7 +324,7 @@ const FarmApplication = () => {
                     <td className="p-2">
                       <input
                         type="text"
-                        className="border p-2 rounded w-full"
+                        className="border p-2 rounded w-full dark:hover:bg-black dark:bg-[#1b1c1c] dark:placeholder-gray-400 dark:text-white"
                         value={farm.poatNumber || ""}
                         readOnly
                       />
@@ -338,7 +332,7 @@ const FarmApplication = () => {
                     <td className="p-2">
                       <input
                         type="text"
-                        className="border p-2 rounded w-full"
+                        className="border p-2 rounded w-full dark:hover:bg-black dark:bg-[#1b1c1c] dark:placeholder-gray-400 dark:text-white"
                         value={farm.farmArea || ""}
                         readOnly
                       />
@@ -376,7 +370,7 @@ const FarmApplication = () => {
             I am the
             <input
               type="text"
-              className="border border-gray-300 rounded px-2 py-1 mx-2 w-20 text-xs bg-gray-100"
+              className="border border-gray-300 rounded px-2 py-1 mx-2 w-20 text-xs bg-gray-100 dark:bg-[#2f3030] dark:placeholder-gray-400 dark:text-white"
               placeholder="Owner"
               id="applicantNameInput"
               disabled

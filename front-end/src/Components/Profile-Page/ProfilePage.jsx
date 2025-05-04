@@ -78,9 +78,7 @@ const ProfilePage = () => {
     }
 
     axios
-      .get(
-        `${BASE_URL}/api/subdistricts/district/${selectedDistrict}`
-      )
+      .get(`${BASE_URL}/api/subdistricts/district/${selectedDistrict}`)
       .then((res) => {
         setSubDistricts(res.data.subdistricts || []);
       })
@@ -99,9 +97,7 @@ const ProfilePage = () => {
     loadingRef.current = true;
 
     axios
-      .get(
-        `${BASE_URL}/api/villages/subdistrict/${selectedSubDistrict}`
-      )
+      .get(`${BASE_URL}/api/villages/subdistrict/${selectedSubDistrict}`)
       .then((res) => {
         if (Array.isArray(res.data)) {
           setVillages(res.data);
@@ -145,7 +141,7 @@ const ProfilePage = () => {
           village_id,
           dob,
           middleName,
-          
+
           ...restData
         } = response.data;
 
@@ -230,16 +226,12 @@ const ProfilePage = () => {
     }
 
     try {
-      await axios.put(
-        `${BASE_URL}/api/users/profile/${storedUserId}`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      await axios.put(`${BASE_URL}/api/users/profile/${storedUserId}`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
       toast.success("Profile Updated Successfully!");
       setIsEditing(false);
     } catch (error) {
@@ -256,13 +248,13 @@ const ProfilePage = () => {
     );
 
   return (
-    <div className="bg-gray-100 p-6 rounded-lg shadow-lg max-w-4xl mx-auto ml-95">
-      <h2 className="text-3xl text-gray-700 font-semibold mb-6">
+    <div className="bg-gray-100 p-6 rounded-lg shadow-lg max-w-4xl mx-auto ml-95 dark:bg-black dark:text-white">
+      <h2 className="text-3xl text-gray-700 font-semibold mb-6 dark:bg-black dark:text-white">
         Your Profile
       </h2>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="flex justify-center mb-6">
+        <div className="bg-white p-6 rounded-lg shadow-md dark:bg-[#1b1c1c] dark:text-white">
+          <div className="flex justify-center mb-6 dark:bg-[#1b1c1c] dark:text-white">
             <div className="relative">
               <img
                 src={previewPic}
@@ -291,7 +283,7 @@ const ProfilePage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-800 mb-2 pb-1 border-b-2 border-gray-300">
+            <h2 className="text-lg font-semibold text-gray-800 mb-2 pb-1 border-b-2 border-gray-300 dark:bg-[#1b1c1c] dark:text-white">
               Personal Details
             </h2>
           </div>
@@ -310,10 +302,12 @@ const ProfilePage = () => {
               <div key={field}>
                 <label
                   htmlFor={field}
-                  className="text-gray-700 block font-medium mb-1"
+                  className="text-gray-700 block font-medium mb-1 dark:bg-[#1b1c1c] dark:text-white"
                 >
                   {label}
-                  {field === "aadhar_number" && <span className="text-red-500"> *</span>} 
+                  {field === "aadhar_number" && (
+                    <span className="text-red-500"> *</span>
+                  )}
                 </label>
 
                 {field === "gender" ? ( // Conditional rendering for gender dropdown
@@ -324,7 +318,7 @@ const ProfilePage = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, [field]: e.target.value })
                     }
-                    className="bg-white border border-gray-300 p-2 rounded-md w-full disabled:bg-gray-200 disabled:text-gray-500"
+                    className="bg-white border border-gray-300 p-2 rounded-md w-full disabled:bg-gray-200 disabled:text-gray-500 dark:bg-black dark:text-white"
                     disabled={!isEditing}
                   >
                     <option value="">Select Gender</option>
@@ -332,6 +326,26 @@ const ProfilePage = () => {
                     <option value="female">Female</option>
                     <option value="other">Other</option>
                   </select>
+                ) : field === "dob" ? ( // Handling the date input field (dob)
+                  <>
+                    <input
+                      id={field}
+                      type="date"
+                      name={field}
+                      value={formData[field] || ""}
+                      onChange={(e) => {
+                        let value = e.target.value;
+                        setFormData({ ...formData, [field]: value });
+                      }}
+                      className="bg-white border border-gray-300 p-2 rounded-md w-full disabled:bg-gray-200 disabled:text-gray-500 dark:bg-black dark:text-white"
+                      disabled={!isEditing}
+                    />
+                    <style>{`
+            .dark input[type="date"]::-webkit-calendar-picker-indicator {
+              filter: invert(1) brightness(2);
+            }
+          `}</style>
+                  </>
                 ) : (
                   <input
                     id={field}
@@ -355,7 +369,7 @@ const ProfilePage = () => {
                         ? 10
                         : undefined
                     }
-                    className="bg-white border border-gray-300 p-2 rounded-md w-full disabled:bg-gray-200 disabled:text-gray-500"
+                    className="bg-white border border-gray-300 p-2 rounded-md w-full disabled:bg-gray-200 disabled:text-gray-500 dark:bg-black dark:text-white"
                     disabled={
                       !isEditing ||
                       ["firstName", "lastName", "email"].includes(field)
@@ -368,7 +382,7 @@ const ProfilePage = () => {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-800 mb-2 pb-1 border-b-2 border-gray-300 mt-10">
+            <h2 className="text-lg font-semibold text-gray-800 mb-2 pb-1 border-b-2 border-gray-300 mt-10 dark:bg-[#1b1c1c] dark:text-white">
               Address Details
             </h2>
           </div>
@@ -377,7 +391,7 @@ const ProfilePage = () => {
           <div>
             <label
               htmlFor="address"
-              className="text-gray-700 block font-medium mb-1"
+              className="text-gray-700 block font-medium mb-1 dark:bg-[#1b1c1c] dark:text-white"
             >
               Address
             </label>
@@ -389,7 +403,7 @@ const ProfilePage = () => {
                 setFormData({ ...formData, address: e.target.value })
               }
               rows={3} // Multiline input
-              className={`border border-gray-300 p-2 rounded-md w-full resize-none ${
+              className={`border border-gray-300 p-2 rounded-md dark:bg-black dark:text-white w-full resize-none ${
                 !isEditing
                   ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                   : "bg-white"
@@ -401,13 +415,12 @@ const ProfilePage = () => {
           <div>
             <label
               htmlFor="state"
-              className="text-gray-700 block font-medium mb-1 "
-              
+              className="text-gray-700 block font-medium mb-1 dark:bg-[#1b1c1c] dark:text-white"
             >
               State <span className="text-red-500">*</span>
             </label>
             <select
-              className="w-full p-3 border rounded disabled:bg-gray-200 disabled:text-gray-500"
+              className="w-full p-3 border rounded disabled:bg-gray-200 disabled:text-gray-500 dark:bg-black dark:text-white"
               value={selectedState}
               onChange={(e) => setSelectedState(e.target.value)}
               disabled={!isEditing}
@@ -425,12 +438,12 @@ const ProfilePage = () => {
           <div>
             <label
               htmlFor="district"
-              className="text-gray-700 block font-medium mb-1"
+              className="text-gray-700 block font-medium mb-1 dark:bg-[#1b1c1c] dark:text-white"
             >
-              District  <span className="text-red-500">*</span>
+              District <span className="text-red-500">*</span>
             </label>
             <select
-              className="w-full p-3 border rounded disabled:bg-gray-200 disabled:text-gray-500"
+              className="w-full p-3 border rounded disabled:bg-gray-200 disabled:text-gray-500 dark:bg-black dark:text-white"
               value={selectedDistrict}
               onChange={(e) => {
                 e.preventDefault();
@@ -451,12 +464,12 @@ const ProfilePage = () => {
           <div>
             <label
               htmlFor="subDistrict"
-              className="text-gray-700 block font-medium mb-1"
+              className="text-gray-700 block font-medium mb-1 dark:bg-[#1b1c1c] dark:text-white"
             >
-              Sub-District  <span className="text-red-500">*</span>
+              Sub-District <span className="text-red-500">*</span>
             </label>
             <select
-              className="w-full p-3 border rounded disabled:bg-gray-200 disabled:text-gray-500"
+              className="w-full p-3 border rounded disabled:bg-gray-200 disabled:text-gray-500 dark:bg-black dark:text-white"
               value={selectedSubDistrict}
               onChange={(e) => setSelectedSubDistrict(e.target.value)}
               disabled={!isEditing || !selectedDistrict}
@@ -474,13 +487,12 @@ const ProfilePage = () => {
           <div>
             <label
               htmlFor="village"
-              className="text-gray-700 block font-medium mb-1 disabled:bg-gray-200 disabled:text-gray-500"
-              
+              className="text-gray-700 block font-medium mb-1 disabled:bg-gray-200 disabled:text-gray-500 dark:bg-[#1b1c1c] dark:text-white"
             >
-              Village  <span className="text-red-500">*</span>
+              Village <span className="text-red-500">*</span>
             </label>
             <select
-              className="w-full p-3 border rounded disabled:bg-gray-200 disabled:text-gray-500"
+              className="w-full p-3 border rounded disabled:bg-gray-200 disabled:text-gray-500 dark:bg-[black] dark:text-white"
               value={selectedVillage}
               onChange={(e) => setSelectedVillage(e.target.value)}
               disabled={!isEditing || !selectedSubDistrict || loading.villages}

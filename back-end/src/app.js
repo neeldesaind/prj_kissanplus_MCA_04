@@ -16,6 +16,7 @@ import manageNamunaRoutes from './routes/manageNamunaRoutes.js'; // Import NOC r
 import form12Routes from './routes/form12.routes.js'; // Import NOC routes
 import razorpayRoutes from './routes/razorPayRoutes.js'; // Import Razorpay routes
 import dashboardRoutes from './routes/dashboard.routes.js'; // Import Razorpay routes
+import contactRoutes from './routes/contactRoutes.js'; // Import Razorpay routes
 
 dotenv.config();
 
@@ -41,5 +42,7 @@ app.use("/api/manageNamuna", manageNamunaRoutes);
 app.use("/api/form12", form12Routes);
 app.use('/api', razorpayRoutes); 
 app.use('/api/dashboarddata', dashboardRoutes); 
+app.use('/api/contact', contactRoutes);
+
 
 export default app;

@@ -3,6 +3,7 @@ import axios from 'axios';
 import DataTable from 'react-data-table-component'; // Import the DataTable component
 import loadingAnime from '../../../assets/lottie/loadingAnime.json';
 import Lottie from 'lottie-react'; // Import Lottie for loading animation
+import { useDarkMode } from "../../Context/useDarkMode";
 
 const PaymentsList = () => {
   const [payments, setPayments] = useState([]);
@@ -11,6 +12,43 @@ const PaymentsList = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState(''); // State for search input
   const BASE_URL = import.meta.env.VITE_BASE_URL; // Assuming you have a BASE_URL environment variable
+  const { theme } = useDarkMode();
+
+
+ const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+
+ const customStyles = {
+  table: {
+    style: {
+      backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+    },
+  },
+  headRow: {
+    style: {
+      backgroundColor: isDarkMode ? "#2c2c2c" : "#f0f0f0",
+      color: isDarkMode ? "#fff" : "#000",
+    },
+  },
+  headCells: {
+    style: {
+      color: isDarkMode ? "#fff" : "#000",
+    },
+  },
+  rows: {
+    style: {
+      backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      color: isDarkMode ? "#fff" : "#000",
+    },
+  },
+  pagination: {
+    style: {
+      backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      color: isDarkMode ? "#fff" : "#000",
+    },
+  },
+};
+
 
 
   useEffect(() => {
@@ -81,10 +119,21 @@ const PaymentsList = () => {
     }
   ];
 
+  const NoDataComponent = () => (
+    <div
+      className={`w-full py-2 text-center text-xl font-semibold ${
+        isDarkMode ? "text-gray-300 bg-[#1b1c1c]" : "text-gray-600 bg-white"
+      }`}
+    >
+      There are no records to display
+    </div>
+  );
+
+
   return (
-    <div className="p-4 mx-auto w-full max-w-5xl ml-75"> {/* Container for centering */}
-      <div className="bg-white p-6 rounded-lg shadow-lg"> {/* White card with shadow */}
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Payments List</h2>
+    <div className="p-4 mx-auto w-full max-w-5xl ml-75 dark:bg-[#1b1c1c] dark:text-gray-100"> {/* Container for centering */}
+      <div className="bg-white p-6 rounded-lg shadow-lg dark:bg-black dark:text-gray-100"> {/* White card with shadow */}
+        <h2 className="text-lg font-semibold text-gray-800 mb-4 dark:bg-black dark:text-gray-100">Payments List</h2>
 
         {/* Search bar inside the card */}
         <div className="mb-4">
@@ -93,7 +142,7 @@ const PaymentsList = () => {
             placeholder="Search by Farmer Name"
             value={searchTerm}
             onChange={handleSearch}
-            className="p-2 border rounded-md w-full text-sm"
+            className="p-2 border rounded-md w-full text-sm dark:bg-black dark:text-gray-100"
           />
         </div>
 
@@ -102,10 +151,11 @@ const PaymentsList = () => {
           columns={columns}
           data={filteredPayments}  
           pagination
-          highlightOnHover
           responsive
           pointerOnHover
-          className="table-auto text-sm" // Added more compact styling
+          customStyles={customStyles}
+          noDataComponent={<NoDataComponent />} 
+          className="table-auto text-sm dark:bg-black dark:text-gray-100" // Added more compact styling
         />
       </div>
     </div>

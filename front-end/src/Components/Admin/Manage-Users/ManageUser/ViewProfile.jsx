@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router";
 import PropTypes from "prop-types";
+import loadingAnime from "../../../../assets/lottie/loadingAnime.json";
+import Lottie from "lottie-react";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -34,7 +36,11 @@ const ViewProfile = () => {
   }, [userId]);
 
   if (loading)
-    return <div className="text-center mt-10 text-lg">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Lottie animationData={loadingAnime} className="w-40 h-40" />
+      </div>
+    );
   if (error)
     return <div className="text-center text-red-500 mt-10">{error}</div>;
 
@@ -49,23 +55,23 @@ const ViewProfile = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-white px-4 py-8 ml-50">
-      <div className="w-full max-w-3xl bg-white rounded-3xl shadow-2xl p-8 transition hover:shadow-xl duration-300">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8 ml-50 dark:bg-[#1b1c1c] dark:text-gray-100">
+      <div className="w-full max-w-3xl bg-white rounded-3xl shadow-2xl p-8 transition hover:shadow-xl duration-300 dark:bg-black dark:text-gray-100">
         {/* Profile Header */}
-        <div className="flex flex-col items-center text-center mb-8">
+        <div className="flex flex-col items-center text-center mb-8 dark:bg-black dark:text-gray-100">
           <img
             src={profile?.avatar || "/Default-Profile/profile-default.jpg"}
             alt="Avatar"
             className="w-36 h-36 rounded-full object-cover border-4 border-white shadow-md ring-4 ring-indigo-200 mb-4"
           />
-          <h2 className="text-3xl font-semibold text-gray-800">
+          <h2 className="text-3xl font-semibold text-gray-800 dark:bg-black dark:text-gray-100">
             {user.firstName} {user.middleName || ""} {user.lastName}
           </h2>
-          <p className="text-gray-500">{user.email}</p>
+          <p className="text-gray-500 dark:bg-black dark:text-gray-100">{user.email}</p>
         </div>
 
         {/* Profile Details - Centered Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 ">
           <ProfileField label="Phone" value={profile?.phone || "N/A"} />
           <ProfileField label="Address" value={profile?.address || "N/A"} />
           <ProfileField
@@ -107,8 +113,8 @@ const ViewProfile = () => {
 
 const ProfileField = ({ label, value }) => (
   <div className="flex flex-col gap-2">
-    <span className="text-sm font-semibold text-gray-500">{label}</span>
-    <span className="text-lg font-medium text-gray-800">{value}</span>
+    <span className="text-sm font-semibold text-gray-500 dark:bg-black dark:text-gray-100">{label}</span>
+    <span className="text-lg font-medium text-gray-800 dark:bg-black dark:text-gray-100">{value}</span>
   </div>
 );
 

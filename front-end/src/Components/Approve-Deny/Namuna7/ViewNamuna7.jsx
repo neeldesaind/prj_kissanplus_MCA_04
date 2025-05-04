@@ -6,6 +6,7 @@ import { BsFillCheckCircleFill, BsFillXCircleFill } from "react-icons/bs";
 import DataTable from "react-data-table-component"; // Import DataTable
 import loadingAnime from "../../../assets/lottie/loadingAnime.json";
 import Lottie from "lottie-react";
+import { useDarkMode } from "../../Context/useDarkMode";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -15,6 +16,43 @@ const ViewNamuna7 = () => {
   const [application, setApplication] = useState(null);
   const [loading, setLoading] = useState(true);
   const formatDateTime = (dateStr) => new Date(dateStr).toLocaleString();
+  const { theme } = useDarkMode();
+
+
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+
+  const customStyles = {
+    table: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      },
+    },
+    headRow: {
+      style: {
+        backgroundColor: isDarkMode ? "#2c2c2c" : "#f0f0f0",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    headCells: {
+      style: {
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    rows: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    pagination: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+  };
+
 
   useEffect(() => {
     const fetchApplication = async () => {
@@ -139,7 +177,7 @@ const ViewNamuna7 = () => {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto mt-6 mb-10 ml-80 bg-white shadow-md rounded-lg p-6">
+    <div className="max-w-5xl mx-auto mt-6 mb-10 ml-80 bg-white shadow-md rounded-lg p-6 dark:bg-black dark:text-gray-100">
       <h1 className="text-2xl font-bold mb-4 text-center">
         Namuna 7 Application Details
       </h1>
@@ -220,8 +258,7 @@ const ViewNamuna7 = () => {
           data={farmDetails}
           pagination
           responsive
-          highlightOnHover
-          striped
+          customStyles={customStyles}
         />
       </div>
 

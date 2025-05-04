@@ -3,6 +3,7 @@ import axios from "axios";
 import DataTable from "react-data-table-component";
 import Lottie from 'lottie-react';
 import loadingAnime from '../../assets/lottie/loadingAnime.json';
+import { useDarkMode } from "../Context/useDarkMode";
 
 const SubmittedExemption = () => {
   const [exemptions, setExemptions] = useState([]);
@@ -10,6 +11,42 @@ const SubmittedExemption = () => {
   const [loading, setLoading] = useState(true);
 
   const userId = localStorage.getItem("userId");
+
+
+const { theme } = useDarkMode();
+const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+const customStyles = {
+  table: {
+    style: {
+      backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+    },
+  },
+  headRow: {
+    style: {
+      backgroundColor: isDarkMode ? "#2c2c2c" : "#f0f0f0",
+      color: isDarkMode ? "#fff" : "#000",
+    },
+  },
+  headCells: {
+    style: {
+      color: isDarkMode ? "#fff" : "#000",
+    },
+  },
+  rows: {
+    style: {
+      backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      color: isDarkMode ? "#fff" : "#000",
+    },
+  },
+  pagination: {
+    style: {
+      backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      color: isDarkMode ? "#fff" : "#000",
+    },
+  },
+};
+
 
   useEffect(() => {
     if (userId) {
@@ -122,6 +159,16 @@ const SubmittedExemption = () => {
     },
   ];
 
+  const NoDataComponent = () => (
+    <div
+      className={`w-full py-2 text-center text-xl font-semibold ${
+        isDarkMode ? "text-gray-300 bg-[#1b1c1c]" : "text-gray-600 bg-white"
+      }`}
+    >
+      There are no records to display
+    </div>
+  );
+
   return (
     <div className="p-4">
       <DataTable
@@ -129,8 +176,8 @@ const SubmittedExemption = () => {
         data={exemptions}
         pagination
         responsive
-        highlightOnHover
-        striped
+        customStyles={customStyles}
+        noDataComponent={<NoDataComponent />}
       />
     </div>
   );

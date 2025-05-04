@@ -36,7 +36,7 @@ const userRegister = async (req, res) => {
             email,
             password: hashedPassword,
             role: role || "Farmer",
-            verified: isAdmin ? true : false, 
+            verified: isAdmin ? true : false, // Directly verify user if added by admin
         });
 
         await newUser.save();

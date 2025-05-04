@@ -37,12 +37,12 @@ const AdminDashboard = () => {
   const { form12 = {}, namuna = {}, noc = {}, exemption = {} } = applications;
 
   return (
-    <div className="p-6 ml-50">
-      <div className="bg-white p-6 rounded-lg shadow-sm max-w-5xl mx-auto">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Admin Dashboard</h2>
+    <div className="p-6 ml-50 dark:bg-[#1b1c1c] dark:text-gray-100">
+      <div className="bg-white p-6 rounded-lg shadow-sm max-w-5xl mx-auto dark:bg-black dark:text-gray-100">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 dark:bg-black dark:text-gray-100">Admin Dashboard</h2>
 
         {/* Payments Section */}
-        <h3 className="text-xl font-semibold text-gray-700 mb-2">Payments</h3>
+        <h3 className="text-xl font-semibold text-gray-700 mb-2 dark:bg-black dark:text-gray-100">Payments</h3>
         <div className="bg-blue-100 p-4 rounded-lg shadow-sm mb-8">
           <FaUsers className="text-3xl text-blue-600 mb-2" />
           <h4 className="text-lg font-semibold text-blue-800">Total Income</h4>
@@ -52,7 +52,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Applications Section */}
-        <h3 className="text-xl font-semibold text-gray-700 mb-2">Applications</h3>
+        <h3 className="text-xl font-semibold text-gray-700 mb-2 dark:bg-black dark:text-gray-100">Applications</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
           <ApplicationCard 
             title="Form 12 Applications" 
@@ -76,7 +76,7 @@ const AdminDashboard = () => {
             pending={noc.pending} 
             approved={noc.approved} 
             denied={noc.denied} 
-            bg="pink" 
+            bg="orange" 
           />
           <ApplicationCard 
             title="Exemption Applications" 
@@ -89,10 +89,10 @@ const AdminDashboard = () => {
         </div>
 
         {/* User Role-wise Section */}
-        <h3 className="text-xl font-semibold text-gray-700 mb-2">User Role-wise Breakdown</h3>
+        <h3 className="text-xl font-semibold text-gray-700 mb-2 dark:bg-black dark:text-gray-100">User Role-wise Breakdown</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
           {usersByRole.map(({ _id, count }) => (
-            <div key={_id} className="bg-gray-100 p-4 rounded-lg shadow-sm">
+            <div key={_id} className="bg-[#c5e1a5] p-4 rounded-lg shadow-sm">
               <FaUsers className="text-3xl text-gray-600 mb-2" />
               <h4 className="text-lg font-semibold text-gray-800">{_id}</h4>
               <p className="text-2xl font-semibold text-gray-600">{count} Users</p>
@@ -101,7 +101,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Location Statistics */}
-        <h3 className="text-xl font-semibold text-gray-700 mb-2">Total Locations</h3>
+        <h3 className="text-xl font-semibold text-gray-700 mb-2 dark:bg-black dark:text-gray-100">Total Locations</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <LocationCard title="Total States" count={totalLocations.states} icon={<MdPublic />} />
           <LocationCard title="Total Districts" count={totalLocations.districts} icon={<FaMapMarkedAlt />} />
@@ -133,7 +133,7 @@ const ApplicationCard = ({ title, submitted = 0, pending = 0, approved = 0, deni
 
 // LocationCard Component
 const LocationCard = ({ title, count, icon }) => (
-  <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
+  <div className="bg-red-100 p-4 rounded-lg shadow-sm">
     {icon && <div className="text-3xl text-gray-600 mb-2">{icon}</div>}
     <h4 className="text-lg font-semibold text-gray-800">{title}</h4>
     <p className="text-2xl font-semibold text-gray-600">{count}</p>

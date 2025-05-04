@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import DataTable from "react-data-table-component"; // Importing DataTable
+import { useDarkMode } from "../../../Context/useDarkMode";
 
 export default function AddSubDistrict() {
   const [subDistrictName, setSubDistrictName] = useState("");
@@ -15,9 +16,44 @@ export default function AddSubDistrict() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const BASE_URL = import.meta.env.VITE_BASE_URL;
-
   const [editingId, setEditingId] = useState(null);
   const [editingName, setEditingName] = useState("");
+   const { theme } = useDarkMode();
+  
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  
+
+  const customStyles = {
+    table: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+      },
+    },
+    headRow: {
+      style: {
+        backgroundColor: isDarkMode ? "#2c2c2c" : "#f0f0f0",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    headCells: {
+      style: {
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    rows: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+    pagination: {
+      style: {
+        backgroundColor: isDarkMode ? "#1b1c1c" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      },
+    },
+  };
+
 
   // Fetch states
   useEffect(() => {
@@ -172,13 +208,23 @@ export default function AddSubDistrict() {
     },
   ];
 
+  const NoDataComponent = () => (
+    <div
+      className={`w-full py-2 text-center text-xl font-semibold ${
+        isDarkMode ? "text-gray-300 bg-[#1b1c1c]" : "text-gray-600 bg-white"
+      }`}
+    >
+      There are no records to display
+    </div>
+  );
+
   return (
-    <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-10">
-      <h2 className="text-xl font-bold mb-6 text-center ">Manage Sub-District</h2>
-      <form onSubmit={handleAddSubDistrict} className="space-y-4">
-        <label className="block text-sm font-medium">Select State</label>
+    <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-10 dark:bg-black dark:text-gray-100">
+      <h2 className="text-xl font-bold mb-6 text-center dark:bg-black dark:text-gray-100">Manage Sub-District</h2>
+      <form onSubmit={handleAddSubDistrict} className="space-y-4 dark:bg-black dark:text-gray-100">
+        <label className="block text-sm font-medium dark:bg-black dark:text-gray-100">Select State</label>
         <select
-          className="w-full p-3 border rounded text-sm"
+          className="w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           value={selectedState}
           onChange={(e) => setSelectedState(e.target.value)}
           required
@@ -191,9 +237,9 @@ export default function AddSubDistrict() {
           ))}
         </select>
 
-        <label className="block text-sm font-medium">Select District</label>
+        <label className="block text-sm font-medium dark:bg-black dark:text-gray-100">Select District</label>
         <select
-          className="w-full p-3 border rounded text-sm"
+          className="w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           value={selectedDistrict}
           onChange={(e) => setSelectedDistrict(e.target.value)}
           required
@@ -206,9 +252,9 @@ export default function AddSubDistrict() {
           ))}
         </select>
 
-        <label className="block text-sm font-medium">Sub-District Name</label>
+        <label className="block text-sm font-medium dark:bg-black dark:text-gray-100">Sub-District Name</label>
         <input
-          className="w-full p-3 border rounded text-sm"
+          className="w-full p-3 border rounded text-sm dark:bg-black dark:text-gray-100"
           type="text"
           value={subDistrictName}
           onChange={(e) => setSubDistrictName(e.target.value)}
@@ -247,8 +293,9 @@ export default function AddSubDistrict() {
             paginationServer
             paginationTotalRows={totalPages * 10} // Assuming 10 items per page
             onChangePage={(page) => setPage(page)} // Handle page change
-            highlightOnHover
             pointerOnHover
+            customStyles={customStyles}
+            noDataComponent={<NoDataComponent />} 
           />
         </div>
       )}

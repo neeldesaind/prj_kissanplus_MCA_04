@@ -10,7 +10,6 @@ const NOCApplication = () => {
   const [profileId, setProfileId] = useState("");
   const [farmIds, setFarmIds] = useState([]);
   const [otherReason, setOtherReason] = useState("");
-
   const [userData, setUserData] = useState({
     farmerName: "",
     village: "",
@@ -162,14 +161,14 @@ const NOCApplication = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto ml-90 mb-10 mt-6">
-      <div className="bg-white shadow-md rounded-lg p-6">
+    <div className="max-w-5xl mx-auto ml-90 mb-10 mt-6 dark:bg-black dark:text-white">
+      <div className="bg-white shadow-md rounded-lg p-6 text-black dark:bg-black dark:text-gray-100">
         <h1 className="text-2xl font-bold text-center mb-2">Application</h1>
         <h1 className="text-l font-bold text-center mb-4">
           Application for No Objection Certificate (NOC)
         </h1>
 
-        <div className="mb-6 p-4 rounded-md bg-gray-50">
+        <div className="mb-6 p-4 rounded-md bg-gray-50 text-black dark:bg-black dark:text-gray-100">
           <h2 className="text-lg font-semibold mb-4">Declaration</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="flex items-center">
@@ -219,7 +218,7 @@ const NOCApplication = () => {
             </p>
             <div className="inline-flex gap-4 items-center">
               <select
-                className="border-b border-gray-500 bg-transparent p-2 focus:outline-none focus:border-black"
+                className="border-b border-gray-500 bg-transparent p-2 focus:outline-none focus:border-black text-black dark:bg-black dark:text-gray-100"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
               >
@@ -230,7 +229,6 @@ const NOCApplication = () => {
                 <option value="Bank Loan">Bank Loan</option>
                 <option value="Other">Other</option>
               </select>
-
               {reason === "Other" && (
   <input
     type="text"
@@ -246,7 +244,7 @@ const NOCApplication = () => {
 
         <hr className="border-y-green-500" />
 
-        <div className="mb-6 p-4 rounded-md bg-gray-50 shadow-lg">
+        <div className="mb-6 p-4 rounded-md bg-gray-50 shadow-lg text-black dark:bg-black dark:text-gray-100">
           <h2 className="text-lg font-semibold mb-2">Farm Details</h2>
           <p className="text-sm text-gray-500 mb-4">
             Please fill in the farm details below.
@@ -276,7 +274,7 @@ const NOCApplication = () => {
                     <td className="p-2">
                       <input
                         type="text"
-                        className="border p-2 rounded w-full"
+                        className="border p-2 rounded w-full dark:bg-black dark:text-gray-100"
                         value={farm.surveyNumber || ""}
                         readOnly
                       />

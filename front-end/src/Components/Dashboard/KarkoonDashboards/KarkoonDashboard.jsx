@@ -36,13 +36,13 @@ const KarkoonDashboard = () => {
   }, [userId]);
 
   return (
-    <div className="p-6 ml-30">
-      <div className="bg-white p-4 rounded-lg shadow-sm max-w-3xl mx-auto">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Karkoon Dashboard</h2>
+    <div className="p-6 ml-30 dark:bg-[#1b1c1c] dark:text-gray-100">
+      <div className="bg-white p-4 rounded-lg shadow-sm max-w-3xl mx-auto dark:bg-black dark:text-gray-100">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4 dark:bg-black dark:text-gray-100">Karkoon Dashboard</h2>
 
         {/* Form 12 Overview */}
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Form 12 Overview</h3>
+        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6 dark:bg-black dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:bg-black dark:text-gray-100">Form 12 Overview</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-teal-100 p-4 rounded-lg shadow-sm hover:bg-teal-200 transition duration-300">
               <FaFileAlt className="text-3xl text-teal-600 mb-2" />
@@ -62,8 +62,8 @@ const KarkoonDashboard = () => {
         </div>
 
         {/* Payment Overview */}
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Payment Overview</h3>
+        <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6 dark:bg-black dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:bg-black dark:text-gray-100">Payment Overview</h3>
           <div className="bg-yellow-100 p-4 rounded-lg shadow-sm hover:bg-yellow-200 transition duration-300">
             <FaDollarSign className="text-3xl text-yellow-600 mb-2" />
             <h3 className="text-lg font-semibold text-yellow-800">Total Income</h3>

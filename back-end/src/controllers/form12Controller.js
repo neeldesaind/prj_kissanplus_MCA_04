@@ -66,56 +66,14 @@ export const getForm12ById = async (req, res) => {
   const { id } = req.params;
 
   try {
+    // Find the Form12 document by ID
     const form12 = await Form12.findById(id);
 
     if (!form12) {
       return res.status(404).json({ message: "Form12 not found" });
     }
 
-    const namuna = await Namuna.findOne({ _id: form12.namuna_id });
-
-    if (!namuna) {
-      return res.status(404).json({ message: "Associated Namuna not found" });
-    }
-
-    const profile = await Profile.findById(namuna.profile_id);
-
-    const user = profile ? await User.findById(profile.user_id) : null;
-    const farmerName = user
-      ? [user.firstName, user.lastName].filter(Boolean).join(" ")
-      : "";
-
-    const farmDoc = namuna.farmDetails?.[0]?.farm_id
-      ? await Farm.findById(namuna.farmDetails[0].farm_id)
-      : null;
-
-    const surveyNumber = farmDoc?.surveyNumber || "";
-    const farmArea = farmDoc?.farmArea || "";
-    const requestedArea = namuna.farmDetails?.[0]?.requested_area || "";
-
-    const dateOfSupply = namuna.date_of_supply
-      ? namuna.date_of_supply.toISOString()
-      : null;
-
-    // Final combined object
-    const result = {
-      farmerName,
-      surveyNumber,
-      farmArea,
-      requestedArea,
-      sourceType: namuna.source_type,
-      cropName: namuna.farmDetails?.[0]?.crop_name || "",
-      rate_per_vigha: form12.rate_per_vigha,
-      total_rate: form12.rate_per_vigha * (requestedArea || 0),
-      date_of_supply: dateOfSupply,
-      isApprovedByEngineer: form12.isApprovedByEngineer,
-      isDeniedByEngineer: form12.isDeniedByEngineer,
-      approvedByEngineerAt: form12.approvedByEngineerAt,
-      deniedByEngineerAt: form12.deniedByEngineerAt,
-      // Include any other fields you need
-    };
-
-    return res.status(200).json(result);
+    return res.status(200).json(form12); // Return the form12 data
   } catch (error) {
     console.error("Error fetching Form12:", error);
     return res.status(500).json({ message: "Server Error" });
@@ -123,48 +81,55 @@ export const getForm12ById = async (req, res) => {
 };
 
 
+
+
 export const saveForm12Data = async (req, res) => {
   try {
     const formDataArray = req.body;
 
-    const savedEntries = await Promise.all(
-      formDataArray.map(async (entry) => {
-        const { namuna_id } = entry; // Use namunaRefId here
+    // Count the number of Form12 documents before processing entries
+    const count = await Form12.countDocuments();
 
-        // Fetch profile_id from Namuna model using namunaRefId
-        const namuna = await Namuna.findById(namuna_id); // Use namunaRefId to fetch Namuna
+    const savedEntries = await Promise.all(
+      formDataArray.map(async (entry, index) => {
+        const { namuna_id } = entry; // Use namuna_id to identify the record
+
+        // Fetch the existing Namuna record by namuna_id
+        const namuna = await Namuna.findById(namuna_id); 
         if (!namuna) {
           throw new Error(`Namuna record not found for ID: ${namuna_id}`);
         }
         const profile_id = namuna.profile_id;
 
-        const existingForm12 = await Form12.findOne({ namunaRefId: namuna_id });
+        // Check if Form12 record already exists for this namuna_id
+        const existingForm12 = await Form12.findOne({ namuna_id });
 
         if (existingForm12) {
-          // Update the existing document
+          // If the record exists, update the existing document
           existingForm12.set({
-            rate_per_vigha: entry.rate_per_vigha,
-            total_rate: entry.total_rate,
+            rate_per_vigha: entry.rate_per_vigha, // Update the rate_per_vigha
+            total_rate: entry.total_rate, // Update the total_rate
+            // You can update other fields if necessary
           });
 
-          return await existingForm12.save();
+          return await existingForm12.save(); // Save the updated document
         } else {
-          // Fetch the profile to get the userId
+          // If the record doesn't exist, create a new Form12 document
           const profile = await Profile.findById(entry.profile_id);
           const userId = profile?.user_id;
 
-          const count = await Form12.countDocuments();
-          const paddedId = String(count + 1).padStart(4, "0");
+          // Generate a unique form_12_id for each entry
+          const paddedId = String(count + index + 1).padStart(4, "0");
           const form12Id = `FORM12-${paddedId}`;
 
           const newEntry = new Form12({
             ...entry,
-            form_12_id: form12Id,
+            form_12_id: form12Id, // Assign a new form_12_id
             userId: userId, // Ensure userId is saved here
             profile_id: profile_id, // Ensure profile_id is saved here
           });
 
-          return await newEntry.save();
+          return await newEntry.save(); // Save the new document
         }
       })
     );
@@ -213,60 +178,53 @@ export const getForm12 = async (req, res) => {
     const result = [];
 
     for (const namuna of namunaRecords) {
-      // Get profile and user to get farmer's name
+      // Get Profile and User
       const profile = await Profile.findById(namuna.profile_id);
-      if (!profile) {
-        continue;
-      }
+      if (!profile) continue;
 
       const user = await User.findById(profile.user_id);
       const farmerName = user
         ? [user.firstName, user.lastName].filter(Boolean).join(" ")
         : "";
 
-      // Get Form12 linked to this Namuna
-      const form12 = await Form12.findOne({ namuna_id: namuna._id });
-      if (!form12) {
-        continue;
-      }
+      // Find ALL Form12s linked to this Namuna
+      const form12s = await Form12.find({ namuna_id: namuna._id });
 
-      // For each farm entry in Namuna
-      for (const farm of namuna.farmDetails) {
-        const farmDoc = await Farm.findById(farm.farm_id);
-        if (!farmDoc) {
-          continue;
+      if (!form12s.length) continue; // if no form12s, skip
+
+      for (const form12 of form12s) {
+        // For each farm inside Namuna
+        for (const farm of namuna.farmDetails) {
+          const farmDoc = await Farm.findById(farm.farm_id);
+          if (!farmDoc) continue;
+
+          result.push({
+            form12RefId: form12._id,
+            form12Id: form12.form_12_id,
+            surveyNumber: farmDoc?.surveyNumber || "",
+            farmArea: farmDoc?.farmArea || "",
+            requestedArea: farm.requested_area || "",
+            farmerName,
+            rate_per_vigha: form12.rate_per_vigha || "",
+            total_rate: form12.total_rate || "",
+            sourceType: namuna.source_type || "",
+            cropName: farm.crop_name || "",
+            date_of_supply: namuna.date_of_supply
+              ? namuna.date_of_supply.toISOString()
+              : null,
+            isApprovedByEngineer: form12.isApprovedByEngineer ?? false,
+            isDeniedByEngineer: form12.isDeniedByEngineer ?? false,
+          });
         }
-
-        const isApprovedByEngineer = form12.isApprovedByEngineer ?? false;
-        const isDeniedByEngineer = form12.isDeniedByEngineer ?? false;
-
-        result.push({
-          form12RefId: form12._id,
-          form12Id: form12.form_12_id,
-          surveyNumber: farmDoc?.surveyNumber || "",
-          farmArea: farmDoc?.farmArea || "",
-          requestedArea: namuna.farmDetails[0].requested_area,
-          farmerName,
-          rate_per_vigha: form12.rate_per_vigha || "",
-          total_rate: form12.total_rate || "",
-          sourceType: namuna.source_type,
-          cropName: namuna.farmDetails[0].crop_name,
-          date_of_supply: namuna.date_of_supply
-            ? namuna.date_of_supply.toISOString()
-            : null,
-          isApprovedByEngineer,
-          isDeniedByEngineer,
-        });
       }
     }
 
     res.status(200).json(result);
   } catch (error) {
-    console.error("Error fetching Form 12 data from Namuna:", error);
-    res.status(500).json({ message: "Failed to fetch data" });
+    console.error("Error fetching Form 12 data:", error);
+    res.status(500).json({ message: "Failed to fetch Form 12 data" });
   }
 };
-
 export const approveForm12 = async (req, res) => {
   try {
     const { id } = req.params;
