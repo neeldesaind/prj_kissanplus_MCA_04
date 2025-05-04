@@ -1,4 +1,6 @@
-# Kissan-Plus 🌾
+Here's the updated version with the title in bold:
+
+# **Kissan-Plus** 🌾
 
 **Kissan-Plus** is a full-stack application designed to support and empower farmers with tools and resources. It features a Vite-powered React frontend and a Node.js/Express backend.
 
@@ -7,22 +9,20 @@
 ## 📂 Project Structure
 
 ```
-
 Kissan-Plus/
 ├── front-end/       # React + Vite frontend
 └── back-end/        # Express backend API
-
-````
+```
 
 ---
 
 ## 🚀 Features
 
-- 🌐 Frontend built with **React + Vite**
-- ⚙️ Backend API powered by **Node.js + Express**
-- 📦 Environment-based configuration using `.env`
-- 🔒 Securely handles environment variables
-- 📁 Organized `src/` directories for scalable development
+* 🌐 Frontend built with **React + Vite**
+* ⚙️ Backend API powered by **Node.js + Express**
+* 📦 Environment-based configuration using `.env`
+* 🔒 Securely handles environment variables
+* 📁 Organized `src/` directories for scalable development
 
 ---
 
@@ -33,7 +33,7 @@ Kissan-Plus/
 ```bash
 git clone <repo-url>
 cd Kissan-Plus
-````
+```
 
 ---
 
@@ -47,10 +47,6 @@ cp .env.sample .env
 npm start
 ```
 
-Server will typically run on `http://localhost:5000`.
-
----
-
 ### 3. Frontend Setup (`front-end`)
 
 ```bash
@@ -59,7 +55,7 @@ npm install
 cp .env.sample .env
 # Fill in .env with proper values
 npm run dev
----
+```
 
 ## 🧪 Screenshots
 
@@ -82,13 +78,9 @@ npm run dev
 | 15  | ![15](https://github.com/user-attachments/assets/50a88486-4dbf-454b-a568-f8bd1ee7ae20) | 15 |
 
 
+### 🤝 Contributors
 
-
----
-
-## 🤝 Contributors
-
-- [Yash Patel](https://github.com/yash-b-patel)
+* [Yash Patel](https://github.com/yash-b-patel)
 
 ---
 
